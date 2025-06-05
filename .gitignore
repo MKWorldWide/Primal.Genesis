@@ -52,3 +52,12 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Ignore everything
+*
+# Except the following files
+!src/hooks/useVoice.ts
+!src/providers/VoiceProvider.tsx
+!src/components/chat/Chat.tsx
+!src/components/analytics/VoiceAnalyticsDashboard.tsx
+!.gitignore

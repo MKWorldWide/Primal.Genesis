@@ -20,6 +20,9 @@ wheels/
 .installed.cfg
 *.egg
 
+# Node modules
+node_modules/
+
 # Virtual Environment
 venv/
 env/
@@ -36,21 +39,63 @@ ENV/
 Thumbs.db
 
 # Logs
+logs/
 *.log
 
 # Temporary files
 *.tmp
 *.temp
 
+# Environment files
+.env
+.env.*
+
 # Configuration files (contain sensitive data)
 athenamist_config.json
 *.config.json
-.env
-.env.local
-.env.production
 
 # API Keys and secrets
 secrets/
 keys/
 *.key
-*.pem 
+*.pem
+
+# Amplify
+amplify/
+amplify*.json
+
+# Misc
+*.local
+*.cache
+
+# Cursor and AI artifacts
+.cursor/
+@memories*.md
+@lessons-learned*.md
+@scratchpad*.md
+
+#amplify-do-not-edit-begin
+amplify/\#current-cloud-backend
+amplify/.config/local-*
+amplify/logs
+amplify/mock-data
+amplify/mock-api-resources
+amplify/backend/amplify-meta.json
+amplify/backend/.temp
+aws-exports.js
+awsconfiguration.json
+amplifyconfiguration.json
+amplifyconfiguration.dart
+amplify-build-config.json
+amplify-gradle-config.json
+amplifytools.xcconfig
+.secret-*
+**.sample
+#amplify-do-not-edit-end
+
+# AthenaMist-Blended specific files to keep
+!src/hooks/useVoice.ts
+!src/providers/VoiceProvider.tsx
+!src/components/chat/Chat.tsx
+!src/components/analytics/VoiceAnalyticsDashboard.tsx
+!.gitignore

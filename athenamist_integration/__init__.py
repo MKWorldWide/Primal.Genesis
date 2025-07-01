@@ -19,6 +19,7 @@ from .lilithos_integration import LilithOSiManager
 from .phantom_integration import PhantomManager
 from .primal_sovereign_integration import PrimalSovereignManager, VoiceCommandType, ProcessingStatus
 from .shadow_nexus_integration import ShadowNexusManager, TradingSignalType, OperationStatus, CommandPlatform
+from .xai_integration import XAIIntegrationManager, XAIRequest, XAIResponse, XAIModelType, QuantumState
 
 __all__ = [
     'AIIntegrationManager',
@@ -30,7 +31,12 @@ __all__ = [
     'ShadowNexusManager',
     'TradingSignalType',
     'OperationStatus',
-    'CommandPlatform'
+    'CommandPlatform',
+    'XAIIntegrationManager',
+    'XAIRequest',
+    'XAIResponse',
+    'XAIModelType',
+    'QuantumState'
 ]
 
 __version__ = "2.0"

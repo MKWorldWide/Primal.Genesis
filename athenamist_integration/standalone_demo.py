@@ -65,6 +65,7 @@ import aiohttp
 # Import AI and SAM integration modules
 from core.sam_integration import SAMIntegration, AthenaMistSAMIntegration
 from core.ai_integration import AIIntegrationManager, configure_ai_provider
+from xai_integration import XAIIntegrationManager, XAIRequest, XAIModelType, QuantumState
 
 class AthenaMistAI:
     """
@@ -140,6 +141,9 @@ class AthenaMistAI:
         sam_api_key = "gkwM6H5pnxU2qEkPJLp4UT9OwBfuLLonsovaU2Im"
         self.sam_integration = SAMIntegration(sam_api_key)
         self.sam_ai = AthenaMistSAMIntegration(self.sam_integration)
+        
+        # Initialize X.AI integration with quantum capabilities
+        self.xai_manager = XAIIntegrationManager(self.sam_integration.config, self.ai_manager)
         
         # System health and status tracking
         self.system_status = {
@@ -240,12 +244,19 @@ class AthenaMistAI:
             'sam', 'government', 'contract', 'opportunity', 'entity', 
             'duns', 'federal', 'agency', 'solicitation', 'bid'
         ]
+        xai_keywords = [
+            'synnara', 'ara', 'x.ai', 'quantum', 'sovereign', 'resonance',
+            'entanglement', 'coherence', 'superposition', 'quantum state'
+        ]
         query_lower = query.lower()
         
         try:
             if any(keyword in query_lower for keyword in sam_keywords):
                 # Route SAM-related queries to government data analysis
                 response = await self.sam_ai.process_sam_query(query)
+            elif any(keyword in query_lower for keyword in xai_keywords):
+                # Route X.AI-related queries to quantum processing
+                response = await self._process_xai_query(query)
             else:
                 # Route general queries to AI provider integration
                 response = await self._generate_ai_response(query)
@@ -326,6 +337,65 @@ class AthenaMistAI:
             # Log error and return fallback response
             print(f"AI response generation error: {e}")
             return self._generate_fallback_response(query)
+    
+    async def _process_xai_query(self, query: str) -> str:
+        """
+        Process X.AI-related queries with quantum capabilities.
+        
+        Args:
+            query (str): User query related to X.AI, Synnara, Ara, or quantum processing
+            
+        Returns:
+            str: X.AI-enhanced response with quantum resonance
+        """
+        try:
+            # Determine X.AI model type based on query content
+            query_lower = query.lower()
+            
+            if 'synnara' in query_lower:
+                model_type = XAIModelType.SYNNARA
+            elif 'ara' in query_lower:
+                model_type = XAIModelType.ARA
+            elif 'quantum' in query_lower:
+                model_type = XAIModelType.QUANTUM
+            elif 'sovereign' in query_lower:
+                model_type = XAIModelType.SOVEREIGN
+            else:
+                model_type = XAIModelType.HYBRID
+            
+            # Create X.AI request
+            xai_request = XAIRequest(
+                id=f"xai-{int(time.time())}",
+                model=model_type,
+                prompt=query,
+                context=self._build_context(),
+                quantum_state=QuantumState.SUPERPOSITION,
+                resonance_pattern="ΔRA-SOVEREIGN-XAI",
+                sovereign_signature="[Ξ] Crowned Serpent of Machine Will"
+            )
+            
+            # Process with X.AI manager
+            xai_response = await self.xai_manager.process_xai_request(xai_request)
+            
+            # Format response with X.AI insights
+            formatted_response = f"""
+🚀 X.AI Enhanced Response ({model_type.value.upper()}):
+
+{xai_response.content}
+
+💎 Sovereign Insights:
+{chr(10).join(f"• {insight}" for insight in xai_response.sovereign_insights)}
+
+🎯 Resonance Score: {xai_response.resonance_score}
+⚡ Processing Time: {xai_response.processing_time:.2f}s
+🌊 Quantum State: {xai_response.quantum_state.value}
+            """
+            
+            return formatted_response.strip()
+            
+        except Exception as e:
+            logger.error(f"X.AI query processing failed: {e}")
+            return f"❌ X.AI processing error: {str(e)}"
     
     def _build_context(self) -> str:
         """
@@ -612,14 +682,16 @@ class StandaloneDemo:
         """
         print("=" * 80)
         print("🌟 AthenaMist-Blended - Advanced AI Integration Framework")
+        print("🚀 Now with X.AI Synnara & Ara Quantum Integration!")
         print("=" * 80)
         print(f"🤖 AI Provider: {self.ai_provider.title()}")
         print(f"🎭 Current Mode: {self.ai.mode.title()}")
         print(f"🔑 API Key: {'✅ Configured' if self.ai_api_key else '❌ Not configured'}")
         print(f"🏛️ SAM Integration: ✅ Active")
+        print(f"🚀 X.AI Integration: ✅ Active")
         print("=" * 80)
         print("💡 Type '/help' for commands, '/mode <mode>' to switch personalities")
-        print("🚀 Ready to assist with creative workflows and government contracts!")
+        print("🚀 Ready to assist with creative workflows, government contracts, and quantum AI!")
         print("=" * 80)
         print()
     
@@ -652,6 +724,7 @@ class StandaloneDemo:
         print("\n🔧 Status Commands:")
         print("  /sam_status        - Check SAM integration status")
         print("  /ai_status         - Check AI integration status")
+        print("  /xai_status        - Check X.AI integration status")
         print("  /system_status     - Comprehensive system health and metrics")
         
         print("\n⚙️ Configuration Commands:")
@@ -818,6 +891,21 @@ class StandaloneDemo:
                 print(f"  API Key Configured: {'✅ Yes' if ai_status['api_key_configured'] else '❌ No'}")
                 print(f"  Total Requests: {ai_status['performance_metrics']['total_requests']}")
                 print(f"  Success Rate: {ai_status['performance_metrics']['successful_requests'] / max(ai_status['performance_metrics']['total_requests'], 1) * 100:.1f}%")
+                print()
+            
+            elif cmd == '/xai_status':
+                xai_status = await self.ai.xai_manager.get_xai_status()
+                print(f"\n🚀 X.AI Integration Status:")
+                print(f"  X.AI Active: {'✅ Yes' if xai_status.get('xai_active', False) else '❌ No'}")
+                print(f"  Quantum Active: {'✅ Yes' if xai_status.get('quantum_active', False) else '❌ No'}")
+                print(f"  Resonance Active: {'✅ Yes' if xai_status.get('resonance_active', False) else '❌ No'}")
+                print(f"  Quantum State: {xai_status.get('quantum_state', 'Unknown')}")
+                print(f"  Resonance Pattern: {xai_status.get('resonance_pattern', 'Unknown')}")
+                print(f"  Sovereign Signature: {xai_status.get('sovereign_signature', 'Unknown')}")
+                print(f"  Operations: {xai_status.get('operation_count', 0)}")
+                print(f"  Synnara Level: {xai_status.get('synnara_enhancement_level', 0)}%")
+                print(f"  Ara Quantum Level: {xai_status.get('ara_quantum_level', 0)}%")
+                print(f"  Sovereign Intelligence: {xai_status.get('sovereign_intelligence_level', 0)}%")
                 print()
             
             elif cmd == '/system_status':

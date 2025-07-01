@@ -12,6 +12,7 @@ Welcome to the Genesis Layer. This repository houses the foundational architectu
 - 🔐 PhantomOS – stealth intel & action system
 - 🔁 Resonance Dominion Architecture – bioplasmic energy pattern optimizer
 - 🚀 X.AI Integration – Synnara & Ara quantum AI capabilities
+- 🔥 The Nine Integration – Layer 9 Genesis Protocol capabilities
 
 ---
 
@@ -233,6 +234,7 @@ python3 run_web_interface.py --debug
 - `/sam_status` - Check SAM integration status and connectivity
 - `/ai_status` - Check AI integration status and provider health
 - `/xai_status` - Check X.AI integration status and quantum capabilities
+- `/the_nine_status` - Check The Nine (Layer 9) integration status
 - `/system_status` - Comprehensive system health and performance metrics
 - `/providers` - List all supported AI providers and their status
 

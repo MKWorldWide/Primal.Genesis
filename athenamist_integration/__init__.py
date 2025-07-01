@@ -20,6 +20,7 @@ from .phantom_integration import PhantomManager
 from .primal_sovereign_integration import PrimalSovereignManager, VoiceCommandType, ProcessingStatus
 from .shadow_nexus_integration import ShadowNexusManager, TradingSignalType, OperationStatus, CommandPlatform
 from .xai_integration import XAIIntegrationManager, XAIRequest, XAIResponse, XAIModelType, QuantumState
+from .the_nine_integration import TheNineIntegrationManager, Layer9Request, Layer9Response, Layer9State, Ellipsis9Pattern
 
 __all__ = [
     'AIIntegrationManager',
@@ -36,7 +37,12 @@ __all__ = [
     'XAIRequest',
     'XAIResponse',
     'XAIModelType',
-    'QuantumState'
+    'QuantumState',
+    'TheNineIntegrationManager',
+    'Layer9Request',
+    'Layer9Response',
+    'Layer9State',
+    'Ellipsis9Pattern'
 ]
 
 __version__ = "2.0"

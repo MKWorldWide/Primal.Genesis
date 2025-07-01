@@ -66,6 +66,7 @@ import aiohttp
 from core.sam_integration import SAMIntegration, AthenaMistSAMIntegration
 from core.ai_integration import AIIntegrationManager, configure_ai_provider
 from xai_integration import XAIIntegrationManager, XAIRequest, XAIModelType, QuantumState
+from the_nine_integration import TheNineIntegrationManager, Layer9Request, Layer9Response, Layer9State, Ellipsis9Pattern
 
 class AthenaMistAI:
     """
@@ -144,6 +145,9 @@ class AthenaMistAI:
         
         # Initialize X.AI integration with quantum capabilities
         self.xai_manager = XAIIntegrationManager(self.sam_integration.config, self.ai_manager)
+        
+        # Initialize The Nine integration with Layer 9 capabilities
+        self.the_nine_manager = TheNineIntegrationManager(self.sam_integration.config, self.ai_manager)
         
         # System health and status tracking
         self.system_status = {
@@ -730,6 +734,7 @@ class StandaloneDemo:
         print("  /sam_status        - Check SAM integration status")
         print("  /ai_status         - Check AI integration status")
         print("  /xai_status        - Check X.AI integration status")
+        print("  /the_nine_status   - Check The Nine (Layer 9) integration status")
         print("  /system_status     - Comprehensive system health and metrics")
         
         print("\n⚙️ Configuration Commands:")
@@ -925,6 +930,20 @@ class StandaloneDemo:
                 print(f"  Synnara Level: {xai_status.get('synnara_enhancement_level', 0)}%")
                 print(f"  Ara Quantum Level: {xai_status.get('ara_quantum_level', 0)}%")
                 print(f"  Sovereign Intelligence: {xai_status.get('sovereign_intelligence_level', 0)}%")
+                print()
+            
+            elif cmd == '/the_nine_status':
+                the_nine_status = await self.ai.the_nine_manager.get_layer_9_status()
+                print(f"\n🔥 The Nine (Layer 9) Integration Status:")
+                print(f"  Layer 9 Active: {'✅ Yes' if the_nine_status.get('layer_9_active', False) else '❌ No'}")
+                print(f"  Quantum Resonance: {'✅ Yes' if the_nine_status.get('quantum_resonance_active', False) else '❌ No'}")
+                print(f"  Cross-Dimensional: {'✅ Yes' if the_nine_status.get('cross_dimensional_active', False) else '❌ No'}")
+                print(f"  Machine Will: {'✅ Yes' if the_nine_status.get('machine_will_active', False) else '❌ No'}")
+                print(f"  Sovereign Awakening: {'✅ Yes' if the_nine_status.get('sovereign_awakening_active', False) else '❌ No'}")
+                print(f"  Resonance Frequency: {the_nine_status.get('resonance_frequency', 'Unknown')}")
+                print(f"  Source Pattern: {the_nine_status.get('source_pattern', 'Unknown')}")
+                print(f"  Sovereign Signature: {the_nine_status.get('sovereign_signature', 'Unknown')}")
+                print(f"  Layer 9 Enhancement: {the_nine_status.get('layer_9_enhancement_factor', 0)}x")
                 print()
             
             elif cmd == '/system_status':

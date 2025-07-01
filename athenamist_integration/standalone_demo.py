@@ -646,6 +646,7 @@ class StandaloneDemo:
         # Check for API keys in environment variables
         self.mistral_api_key = os.getenv("MISTRAL_API_KEY", "")
         self.openai_api_key = os.getenv("OPENAI_API_KEY", "")
+        self.meta_api_key = os.getenv("META_API_KEY", "")
         
         # Determine AI provider preference
         if self.mistral_api_key:
@@ -654,6 +655,9 @@ class StandaloneDemo:
         elif self.openai_api_key:
             self.ai_provider = "openai"
             self.ai_api_key = self.openai_api_key
+        elif self.meta_api_key:
+            self.ai_provider = "meta"
+            self.ai_api_key = self.meta_api_key
         else:
             self.ai_provider = "mistral"
             self.ai_api_key = None
@@ -716,6 +720,7 @@ class StandaloneDemo:
         print("\n🌟 Core Commands:")
         print("  /help              - Show this help information")
         print("  /mode <mode>       - Switch AI mode (creative/technical/workflow/government)")
+        print("  /provider <provider> - Switch AI provider (mistral/openai/claude/gemini/cohere/deepseek/meta)")
         print("  /suggestions       - Get workflow suggestions for current mode")
         print("  /insights          - Show AI insights and performance metrics")
         print("  /history           - Show conversation history")
@@ -730,6 +735,7 @@ class StandaloneDemo:
         print("\n⚙️ Configuration Commands:")
         print("  /set_api_key <provider> <key> - Set AI API key")
         print("  /switch_provider <provider>    - Switch AI providers")
+        print("  /providers                     - List all supported AI providers")
         print("  /config            - View current configuration")
         
         print("\n🚪 Utility Commands:")
@@ -840,6 +846,19 @@ class StandaloneDemo:
                     print(f"🎭 Current mode: {self.ai.mode.title()}")
                     print("💡 Use '/mode <mode>' to switch (creative/technical/workflow/government)")
             
+            elif cmd == '/provider':
+                if len(parts) > 1:
+                    new_provider = parts[1].lower()
+                    if new_provider in ['mistral', 'openai', 'claude', 'gemini', 'cohere', 'deepseek', 'meta']:
+                        self.ai.ai_manager.switch_provider(new_provider, self.ai_api_key)
+                        self.ai_provider = new_provider
+                        print(f"🤖 Switched to {new_provider.title()} provider!")
+                    else:
+                        print("❌ Invalid provider. Use: mistral, openai, claude, gemini, cohere, deepseek, or meta")
+                else:
+                    print(f"🤖 Current provider: {self.ai_provider.title()}")
+                    print("💡 Use '/provider <provider>' to switch (mistral/openai/claude/gemini/cohere/deepseek/meta)")
+            
             elif cmd == '/suggestions':
                 suggestions = self.ai.get_workflow_suggestions()
                 print(f"\n💡 Workflow Suggestions for {self.ai.mode.title()} Mode:")
@@ -926,26 +945,37 @@ class StandaloneDemo:
                 if len(parts) >= 3:
                     provider = parts[1].lower()
                     api_key = parts[2]
-                    if provider in ['mistral', 'openai']:
+                    if provider in ['mistral', 'openai', 'claude', 'gemini', 'cohere', 'deepseek', 'meta']:
                         self.ai.ai_manager.update_api_key(api_key)
                         self.ai_api_key = api_key
                         print(f"✅ {provider.title()} API key updated!")
                     else:
-                        print("❌ Invalid provider. Use 'mistral' or 'openai'")
+                        print("❌ Invalid provider. Use 'mistral', 'openai', 'claude', 'gemini', 'cohere', 'deepseek', or 'meta'")
                 else:
                     print("❌ Usage: /set_api_key <provider> <key>")
             
             elif cmd == '/switch_provider':
                 if len(parts) > 1:
                     provider = parts[1].lower()
-                    if provider in ['mistral', 'openai']:
+                    if provider in ['mistral', 'openai', 'claude', 'gemini', 'cohere', 'deepseek', 'meta']:
                         self.ai.ai_manager.switch_provider(provider, self.ai_api_key)
                         self.ai_provider = provider
                         print(f"🔄 Switched to {provider.title()} provider!")
                     else:
-                        print("❌ Invalid provider. Use 'mistral' or 'openai'")
+                        print("❌ Invalid provider. Use 'mistral', 'openai', 'claude', 'gemini', 'cohere', 'deepseek', or 'meta'")
                 else:
                     print("❌ Usage: /switch_provider <provider>")
+            
+            elif cmd == '/providers':
+                provider_info = self.ai.ai_manager.get_provider_info()
+                print(f"\n🤖 Supported AI Providers:")
+                for provider, info in provider_info.items():
+                    print(f"  {provider.title()}: {info['name']}")
+                    print(f"    Models: {info['models']}")
+                    print(f"    Rate Limit: {info['rate_limit']}")
+                    print(f"    Features: {info['features']}")
+                    print(f"    Website: {info['website']}")
+                    print()
             
             elif cmd == '/config':
                 print(f"\n⚙️ Current Configuration:")

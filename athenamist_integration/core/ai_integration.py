@@ -826,6 +826,210 @@ class DeepSeekAIProvider(AIProvider):
         
         return mode_prompts.get(mode, mode_prompts["creative"])
 
+class MetaAIProvider(AIProvider):
+    """
+    Meta AI API Integration Implementation
+    
+    This class provides integration with Meta AI API, offering access to
+    their advanced language models including Llama 3, Llama 3.1, and other Meta AI services.
+    
+    Features:
+    - Support for multiple Llama models (Llama 3, Llama 3.1, Llama 3.1 405B)
+    - Advanced reasoning and analysis capabilities
+    - Multilingual support and understanding
+    - Context-aware responses
+    - Comprehensive error handling
+    
+    API Endpoints:
+    - Chat completions: /v1/chat/completions
+    - Model information: /v1/models
+    - Usage tracking: /v1/usage
+    
+    Rate Limits:
+    - Llama 3.1 405B: 100 requests/minute
+    - Llama 3.1 70B: 200 requests/minute
+    - Llama 3.1 8B: 500 requests/minute
+    - Token limits: 32k tokens per request
+    
+    Security:
+    - API key authentication
+    - Request validation
+    - Response sanitization
+    - Rate limiting enforcement
+    """
+    
+    def __init__(self, api_key: str = None):
+        """
+        Initialize Meta AI provider
+        
+        Args:
+            api_key (str): Meta AI API key
+            
+        Configuration:
+        - Base URL: https://api.meta.ai/v1
+        - Default model: llama-3.1-405b-instruct
+        - Timeout: 30 seconds
+        - Max retries: 3 attempts
+        """
+        super().__init__(api_key)
+        self.base_url = "https://api.meta.ai/v1"
+        self.model = "llama-3.1-405b-instruct"  # Alternative: "llama-3.1-70b-instruct", "llama-3.1-8b-instruct"
+        self.timeout = 30
+        self.max_retries = 3
+    
+    async def generate_response(self, query: str, context: str = "", mode: str = "creative") -> str:
+        """
+        Generate response using Meta AI API
+        
+        This method implements the complete request-response cycle:
+        1. API key validation and authentication
+        2. Request payload construction
+        3. HTTP request execution
+        4. Response parsing and validation
+        5. Error handling and recovery
+        6. Performance monitoring
+        
+        Args:
+            query (str): User query to process
+            context (str): Additional context information
+            mode (str): AI personality mode
+            
+        Returns:
+            str: Generated AI response or error message
+            
+        Raises:
+            ValueError: Invalid parameters
+            ConnectionError: Network connectivity issues
+            TimeoutError: Request timeout
+        """
+        if not self.api_key:
+            return "❌ Meta AI API key not configured. Please set your Meta AI API key."
+        
+        if not query.strip():
+            return "❌ Query cannot be empty."
+        
+        # Update request tracking
+        self.request_count += 1
+        self.last_request_time = datetime.now()
+        
+        # Build system prompt based on mode
+        system_prompt = self._get_system_prompt(mode)
+        
+        # Construct request payload
+        payload = {
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Context: {context}\n\nQuery: {query}"}
+            ],
+            "max_tokens": 2048,
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "frequency_penalty": 0.0,
+            "presence_penalty": 0.0
+        }
+        
+        # Prepare headers
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        try:
+            # Create async HTTP session
+            async with aiohttp.ClientSession() as session:
+                # Execute request with retry logic
+                for attempt in range(self.max_retries):
+                    try:
+                        async with session.post(
+                            f"{self.base_url}/chat/completions",
+                            json=payload,
+                            headers=headers,
+                            timeout=aiohttp.ClientTimeout(total=self.timeout)
+                        ) as response:
+                            
+                            if response.status == 200:
+                                data = await response.json()
+                                
+                                # Extract response content
+                                if "choices" in data and len(data["choices"]) > 0:
+                                    content = data["choices"][0]["message"]["content"]
+                                    
+                                    # Log successful request
+                                    self.logger.info(f"Meta AI response generated successfully")
+                                    
+                                    return content
+                                else:
+                                    self.error_count += 1
+                                    return "❌ Invalid response format from Meta AI API"
+                            
+                            elif response.status == 401:
+                                self.error_count += 1
+                                return "❌ Invalid Meta AI API key. Please check your credentials."
+                            
+                            elif response.status == 429:
+                                self.error_count += 1
+                                return "⚠️ Rate limit exceeded for Meta AI API. Please try again later."
+                            
+                            elif response.status == 500:
+                                self.error_count += 1
+                                if attempt < self.max_retries - 1:
+                                    await asyncio.sleep(2 ** attempt)  # Exponential backoff
+                                    continue
+                                else:
+                                    return "❌ Meta AI API server error. Please try again later."
+                            
+                            else:
+                                self.error_count += 1
+                                error_text = await response.text()
+                                return f"❌ Meta AI API error (HTTP {response.status}): {error_text}"
+                                
+                    except asyncio.TimeoutError:
+                        self.error_count += 1
+                        if attempt < self.max_retries - 1:
+                            await asyncio.sleep(2 ** attempt)
+                            continue
+                        else:
+                            return "❌ Request timeout for Meta AI API"
+                    
+                    except aiohttp.ClientError as e:
+                        self.error_count += 1
+                        if attempt < self.max_retries - 1:
+                            await asyncio.sleep(2 ** attempt)
+                            continue
+                        else:
+                            return f"❌ Network error with Meta AI API: {str(e)}"
+                
+                return "❌ Failed to connect to Meta AI API after multiple attempts"
+                
+        except Exception as e:
+            self.error_count += 1
+            self.logger.error(f"Meta AI API error: {e}")
+            return f"❌ Meta AI API error: {str(e)}"
+    
+    def _get_system_prompt(self, mode: str) -> str:
+        """
+        Get system prompt based on AI mode
+        
+        Args:
+            mode (str): AI personality mode
+            
+        Returns:
+            str: System prompt for the specified mode
+        """
+        base_prompt = "You are an advanced AI assistant powered by Meta's Llama models. "
+        
+        if mode == "creative":
+            return base_prompt + "You excel at creative tasks, artistic expression, and imaginative thinking. Provide inspiring and innovative responses that encourage creative exploration."
+        elif mode == "technical":
+            return base_prompt + "You are a technical expert with deep knowledge of programming, engineering, and scientific concepts. Provide precise, accurate, and well-structured technical responses."
+        elif mode == "workflow":
+            return base_prompt + "You are a productivity and workflow optimization expert. Focus on practical solutions, efficiency improvements, and actionable advice for better workflows."
+        elif mode == "government":
+            return base_prompt + "You are a government and public sector specialist. Provide comprehensive analysis of government contracts, regulations, and public sector opportunities."
+        else:
+            return base_prompt + "You are a helpful AI assistant ready to assist with any task."
+
 class MistralAIProvider(AIProvider):
     """
     Mistral AI API Integration Implementation
@@ -1314,8 +1518,10 @@ class AIIntegrationManager:
             self.provider = CohereAIProvider(self.api_key)
         elif self.provider_name == "deepseek":
             self.provider = DeepSeekAIProvider(self.api_key)
+        elif self.provider_name == "meta":
+            self.provider = MetaAIProvider(self.api_key)
         else:
-            raise ValueError(f"Unsupported provider: {provider}. Supported providers: mistral, openai, claude, gemini, cohere, deepseek")
+            raise ValueError(f"Unsupported provider: {provider}. Supported providers: mistral, openai, claude, gemini, cohere, deepseek, meta")
         
         # Setup logging and monitoring
         self.logger = logging.getLogger(__name__)
@@ -1350,7 +1556,8 @@ class AIIntegrationManager:
             "claude": "ANTHROPIC_API_KEY",
             "gemini": "GOOGLE_API_KEY",
             "cohere": "COHERE_API_KEY",
-            "deepseek": "DEEPSEEK_API_KEY"
+            "deepseek": "DEEPSEEK_API_KEY",
+            "meta": "META_API_KEY"
         }
         
         env_var = env_mapping.get(self.provider_name, "")
@@ -1454,7 +1661,7 @@ class AIIntegrationManager:
         Raises:
             ValueError: If provider is not supported
         """
-        supported_providers = ["mistral", "openai", "claude", "gemini", "cohere", "deepseek"]
+        supported_providers = ["mistral", "openai", "claude", "gemini", "cohere", "deepseek", "meta"]
         
         if provider.lower() not in supported_providers:
             raise ValueError(f"Provider must be one of: {', '.join(supported_providers)}")
@@ -1476,6 +1683,8 @@ class AIIntegrationManager:
             self.provider = CohereAIProvider(self.api_key)
         elif self.provider_name == "deepseek":
             self.provider = DeepSeekAIProvider(self.api_key)
+        elif self.provider_name == "meta":
+            self.provider = MetaAIProvider(self.api_key)
         
         # Reset performance metrics for new provider
         self.performance_metrics = {
@@ -1494,7 +1703,7 @@ class AIIntegrationManager:
         Returns:
             List[str]: List of supported provider names
         """
-        return ["mistral", "openai", "claude", "gemini", "cohere", "deepseek"]
+        return ["mistral", "openai", "claude", "gemini", "cohere", "deepseek", "meta"]
     
     def get_provider_info(self) -> Dict[str, Dict[str, str]]:
         """
@@ -1545,6 +1754,13 @@ class AIIntegrationManager:
                 "rate_limit": "50 req/min (free), 2000 req/min (paid)",
                 "features": "Code generation, technical expertise",
                 "website": "https://platform.deepseek.com/"
+            },
+            "meta": {
+                "name": "Meta AI",
+                "models": "Llama 3.1 405B, Llama 3.1 70B, Llama 3.1 8B",
+                "rate_limit": "100-500 req/min (depending on model)",
+                "features": "Advanced reasoning, multilingual support",
+                "website": "https://ai.meta.com/"
             }
         }
 

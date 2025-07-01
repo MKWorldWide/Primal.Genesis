@@ -98,6 +98,12 @@ AthenaMist-Blended 2.0 supports **7 major AI providers** for intelligent respons
 - **Rate Limits**: 50 requests/minute (free), 2000 requests/minute (paid)
 - **Get API Key**: https://platform.deepseek.com/
 
+### **Meta AI**
+- **Models**: Llama 3.1 405B, Llama 3.1 70B, Llama 3.1 8B
+- **Features**: Advanced reasoning, multilingual support
+- **Rate Limits**: 100-500 requests/minute (depending on model)
+- **Get API Key**: https://ai.meta.com/
+
 ### **Phantom AI** (Ethereal)
 - **Features**: Mystical workflow enhancement, shadow tendrils
 - **Capabilities**: Ethereal response generation, phantom-powered analytics
@@ -136,6 +142,9 @@ export COHERE_API_KEY="your_cohere_api_key"
 
 # For DeepSeek
 export DEEPSEEK_API_KEY="your_deepseek_api_key"
+
+# For Meta AI
+export META_API_KEY="your_meta_api_key"
 ```
 
 #### Option 3: In-App Configuration
@@ -146,6 +155,7 @@ export DEEPSEEK_API_KEY="your_deepseek_api_key"
 /set_api_key gemini your_api_key_here
 /set_api_key cohere your_api_key_here
 /set_api_key deepseek your_api_key_here
+/set_api_key meta your_api_key_here
 ```
 
 ## 🌐 Web Interface
@@ -180,7 +190,7 @@ python3 run_web_interface.py --debug
 ## 🏛️ Features
 
 ### **Core Capabilities**
-- **Multi-Provider AI Integration** - Seamless switching between 7 AI providers
+- **Multi-Provider AI Integration** - Seamless switching between 8 AI providers
 - **Real AI Responses** - Powered by state-of-the-art language models
 - **Creative AI Assistant** - Multiple personality modes (Creative, Technical, Workflow, Government)
 - **SAM Integration** - US Government contract data and entity search

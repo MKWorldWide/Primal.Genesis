@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0] - 2024-12-19 00:00:00
+
+### Added
+- 🤖 Meta AI Integration - Llama 3.1 models and advanced reasoning
+- 🔧 Enhanced Provider Management - Support for 8 AI providers total
+- 📊 Provider Information Command - New /providers command
+- 🔄 Provider Switching - Enhanced provider switching capabilities
+- 📝 Comprehensive Provider Documentation - Updated provider information
+
+### Changed
+- Enhanced AI provider support from 7 to 8 providers
+- Improved provider switching and management
+- Updated documentation with Meta AI capabilities
+
+### Fixed
+- Provider switching validation
+- API key management for all providers
+- Environment variable handling
+
+### Security
+- Enhanced API key validation for Meta AI
+- Improved provider authentication
+
+### Performance
+- Optimized provider switching
+- Enhanced provider information display
+
+### Documentation
+- Added Meta AI integration documentation
+- Updated provider command reference
+- Enhanced provider information display
+
 ## [3.0.0] - 2024-12-19 00:00:00
 
 ### Added

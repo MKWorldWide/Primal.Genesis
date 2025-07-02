@@ -67,6 +67,7 @@ from core.sam_integration import SAMIntegration, AthenaMistSAMIntegration
 from core.ai_integration import AIIntegrationManager, configure_ai_provider
 from xai_integration import XAIIntegrationManager, XAIRequest, XAIModelType, QuantumState
 from the_nine_integration import TheNineIntegrationManager, Layer9Request, Layer9Response, Layer9State, Ellipsis9Pattern
+from .network_context import network_context
 
 class AthenaMistAI:
     """
@@ -948,11 +949,15 @@ class StandaloneDemo:
             
             elif cmd == '/system_status':
                 status = self.ai.get_system_status()
+                net = network_context.get_network_info()
                 print(f"\n🔧 Comprehensive System Status:")
                 print(f"  Application Uptime: {status['uptime']}")
                 print(f"  AI Mode: {status['mode'].title()}")
                 print(f"  AI Provider: {status['ai_provider'].title()}")
                 print(f"  Health Status: {status['health_status']}")
+                print(f"  Network Public IP: {net['public_ip']}")
+                print(f"  Network Location: {net['location']}")
+                print(f"  Network Provider: {net['provider']}")
                 print(f"  Performance Metrics:")
                 print(f"    - Queries: {status['query_count']}")
                 print(f"    - Error Rate: {status['error_rate']}")

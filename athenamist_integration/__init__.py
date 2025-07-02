@@ -21,6 +21,7 @@ from .primal_sovereign_integration import PrimalSovereignManager, VoiceCommandTy
 from .shadow_nexus_integration import ShadowNexusManager, TradingSignalType, OperationStatus, CommandPlatform
 from .xai_integration import XAIIntegrationManager, XAIRequest, XAIResponse, XAIModelType, QuantumState
 from .the_nine_integration import TheNineIntegrationManager, Layer9Request, Layer9Response, Layer9State, Ellipsis9Pattern
+from .network_context import NetworkContext, network_context
 
 __all__ = [
     'AIIntegrationManager',
@@ -42,7 +43,9 @@ __all__ = [
     'Layer9Request',
     'Layer9Response',
     'Layer9State',
-    'Ellipsis9Pattern'
+    'Ellipsis9Pattern',
+    'NetworkContext',
+    'network_context'
 ]
 
 __version__ = "2.0"

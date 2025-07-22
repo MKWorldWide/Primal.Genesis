@@ -1,0 +1,1 @@
+// injected signal interface

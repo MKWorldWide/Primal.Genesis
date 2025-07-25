@@ -366,12 +366,13 @@ class SAMIntegration:
         await self.initialize_session()
         
         # Generate cache key for this search
-        cache_key = f"search_{hash(frozenset({
+        search_params = {
             'term': search_term,
             'type': entity_type,
             'status': registration_status,
             'limit': limit
-        }.items()))}"
+        }
+        cache_key = f"search_{hash(frozenset(search_params.items()))}"
         
         # Check cache first for performance
         if cache_key in self.cache:

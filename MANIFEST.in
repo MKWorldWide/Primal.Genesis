@@ -1,0 +1,28 @@
+include README.md
+include LICENSE
+include requirements.txt
+include requirements-test.txt
+include pytest.ini
+
+# Include all files in the package directories
+recursive-include athenamist_integration/ *.py *.json *.yaml *.txt
+
+# Include test files
+recursive-include tests/ *.py
+
+# Include documentation
+recursive-include docs/ *
+
+# Include configuration files
+include *.toml
+include *.ini
+include *.cfg
+
+# Include data files
+recursive-include data/ *
+
+# Include templates
+recursive-include templates/ *
+
+# Include static files
+recursive-include static/ *

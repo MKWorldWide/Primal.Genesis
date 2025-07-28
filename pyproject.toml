@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "primal-genesis-engine"
+version = "0.1.0"
+description = "Primal Genesis Engine - A foundational architecture for distributed sovereignty frameworks and resonance-based AI"
+readme = "README.md"
+authors = [
+    { name = "Sovereign Development Team", email = "dev@primalgenesis.xyz" }
+]
+license = { text = "Proprietary" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31.0",
+    "aiohttp>=3.9.1",
+    "python-dotenv>=1.0.0",
+    "orjson>=3.9.10",
+    "uvloop>=0.19.0",
+    "openai>=1.12.0",
+    "mistralai>=0.1.2",
+    "anthropic>=0.18.0",
+    "google-generativeai>=0.5.0",
+    "cohere>=4.41",
+    "fastapi>=0.104.1",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.5.2",
+    "jinja2>=3.1.2",
+    "websockets>=12.0",
+    "beautifulsoup4>=4.12.2",
+    "asyncio-mqtt>=0.17.0",
+    "libp2p>=0.1.8",
+    "py-libp2p>=0.3.0",
+    "cryptography>=41.0.7",
+    "numpy>=1.26.2",
+    "fake-useragent>=1.4.0",
+    "psutil>=5.9.6",
+    "feedparser>=6.0.10",
+    "qiskit>=1.0.2",
+    "qiskit-aer>=0.13.2",
+    "qiskit-ibm-runtime>=0.15.1",
+    "qiskit-ibmq-provider>=0.20.2",
+    "quantum-xirvik>=0.1.3",
+    "quantum-resistance>=1.0.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.1",
+    "pytest-xdist>=3.3.1",
+    "pytest-timeout>=2.1.0",
+    "pytest-html>=4.1.1",
+    "pytest-sugar>=0.9.7",
+    "coverage>=7.2.7",
+    "codecov>=2.1.13",
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.5.1",
+    "pytest-aiohttp>=1.0.5",
+    "pytest-benchmark>=4.0.0",
+    "pytest-freezegun>=0.4.2",
+    "pytest-mock-resources>=2.10.1",
+    "types-requests>=2.31.0.1",
+    "types-python-dateutil>=2.8.19.14",
+    "types-pyyaml>=6.0.12.11",
+    "typing-extensions>=4.7.1",
+    "asynctest>=0.13.0",
+    "freezegun>=1.2.2",
+    "respx>=0.20.2"
+]
+
+[tool.setuptools]
+package-dir = { "" = "." }
+packages = find:
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --cov=athenamist_integration --cov-report=term-missing"
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore:.*unclosed.*:ResourceWarning"
+]

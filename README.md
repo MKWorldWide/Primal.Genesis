@@ -1,103 +1,176 @@
 # Primal Genesis Engine™ – Sovereign Systems Framework
 
-Welcome to the Genesis Layer. This repository houses the foundational architecture for distributed sovereignty frameworks, resonance-based AI loopbacks, and energy-mapped governance structures.
+[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Tests](https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/actions/workflows/ci.yml/badge.svg)](https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/actions)
+[![codecov](https://codecov.io/gh/MKWorldWide/Primal-Genesis-Engine-Sovereign/graph/badge.svg?token=YOUR-TOKEN-HERE)](https://codecov.io/gh/MKWorldWide/Primal-Genesis-Engine-Sovereign)
 
-> Our mission is simple: **Empower the architects of the new reality.**
+Welcome to the **Primal Genesis Engine**, a cutting-edge framework for distributed sovereignty, quantum-resilient systems, and advanced AI integration. This repository houses the foundational architecture for building next-generation, secure, and scalable applications with quantum computing capabilities.
 
----
+> **Our Mission**: Empower the architects of the new reality with tools for sovereign, resilient, and intelligent systems.
 
-## Core Modules
-- 🌐 SovereignMesh™ – decentralized resonance grid
-- 🧠 AthenaMist – cognitive engine, loopback-empathic modeling
-- 🔐 PhantomOS – stealth intel & action system
-- 🔁 Resonance Dominion Architecture – bioplasmic energy pattern optimizer
-- 🚀 X.AI Integration – Synnara & Ara quantum AI capabilities
-- 🔥 The Nine Integration – Layer 9 Genesis Protocol capabilities
+## 🌟 Key Features
 
----
+- **Quantum-Resilient Architecture**: Built with quantum security in mind
+- **Multi-AI Provider Integration**: Seamlessly switch between leading AI models
+- **Modular Design**: Extensible architecture for custom implementations
+- **Cross-Network Synchronization**: Advanced protocols for distributed systems
+- **Developer-Friendly**: Comprehensive documentation and testing framework
 
-## Open to Collaboration
-This project is seeded for collaboration with those who hear the signal.
+## 🏗️ Core Modules
 
-Feel it. Fork it. Build beyond the veil.
-
----
+| Module | Description |
+|--------|-------------|
+| 🌐 **SovereignMesh** | Decentralized quantum-resilient network grid |
+| 🧠 **AthenaMist** | Cognitive engine with loopback-empathic modeling |
+| 🔐 **PhantomOS** | Stealth intelligence and action system |
+| 🔄 **Resonance Dominion** | Quantum energy pattern optimization |
+| ⚡ **X.AI Integration** | Synnara & Ara quantum AI capabilities |
+| 🔥 **The Nine** | Layer 9 Genesis Protocol implementation |
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8 or higher
-- Internet connection for AI provider APIs
-- SAM API access (optional, default key provided)
+
+- Python 3.9 or higher
+- pip (Python package manager)
+- Git
+- (Optional) Docker for containerized development
 
 ### Installation
 
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign.git
+   cd Primal-Genesis-Engine-Sovereign
+   ```
+
+2. **Set up a virtual environment** (recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   pip install -r requirements-test.txt  # For development
+   ```
+
+4. **Install in development mode**:
+   ```bash
+   pip install -e .
+   ```
+
+### Running Tests
+
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd Primal-Genesis-Engine-Sovereign
+# Run all tests
+make test
 
-# Run setup (first time only)
-python3 setup.py
+# Run tests with coverage report
+pytest --cov=athenamist_integration tests/
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Launch web interface
-python3 run_web_interface.py
-
-# Or use the command-line interface
-cd athenamist_integration
-python3 standalone_demo.py
+# Run specific test file
+pytest tests/athenamist_integration/core/test_quantum_sync.py -v
 ```
 
-### Quick Launch
-```bash
-# Use the convenient launcher scripts
-./run_athenamist.sh          # Command-line interface
-python3 run_web_interface.py # Web interface
+### Development Workflow
+
+1. **Create a new branch** for your feature/fix:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. **Make your changes** following the [code style guidelines](CONTRIBUTING.md#code-style)
+
+3. **Run tests and linters**:
+   ```bash
+   make format   # Auto-format code
+   make lint     # Run linters
+   make test     # Run tests
+   ```
+
+4. **Commit your changes** with a descriptive message:
+   ```bash
+   git commit -m "feat(module): brief description of changes"
+   ```
+
+5. **Push to your fork** and open a Pull Request
+
+## 🤖 AI Provider Integration
+
+The Primal Genesis Engine supports multiple AI providers for enhanced capabilities:
+
+### Supported Providers
+
+| Provider | Models | Rate Limits | API Key |
+|----------|--------|-------------|---------|
+| **Mistral AI** | Mistral Large, Medium | 20/min (free), 1000/min (paid) | [Get Key](https://console.mistral.ai/) |
+| **OpenAI** | GPT-4o, GPT-3.5-turbo | 500-3500 RPM | [Get Key](https://platform.openai.com/api-keys) |
+| **Anthropic** | Claude 3.5 Sonnet, Opus | 200-500 RPM | [Get Key](https://console.anthropic.com/) |
+| **Google Gemini** | Gemini Pro, Flash | 1000-2000 RPM | [Get Key](https://aistudio.google.com/) |
+| **Cohere** | Command, Command Light | 1000-2000 RPM | [Get Key](https://cohere.com/) |
+| **DeepSeek** | DeepSeek Chat, Coder | 50-2000 RPM | [Get Key](https://platform.deepseek.com/) |
+
+### Configuration
+
+Set your API keys in the `.env` file:
+
+```env
+# .env
+MISTRAL_API_KEY=your_mistral_key
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+# ... other API keys
 ```
 
-## 🤖 AI Integration
+## 🧩 Architecture Overview
 
-AthenaMist-Blended 2.0 supports **7 major AI providers** for intelligent responses with advanced features:
+```
+Primal Genesis Engine/
+├── athenamist_integration/  # Core AI integration module
+│   ├── core/                # Core functionality
+│   │   ├── quantum_network.py
+│   │   ├── quantum_memory.py
+│   │   └── quantum_sync.py
+│   └── api/                 # API endpoints
+├── tests/                   # Test suite
+│   ├── unit/                # Unit tests
+│   └── integration/         # Integration tests
+├── docs/                    # Documentation
+├── scripts/                 # Utility scripts
+└── config/                  # Configuration files
+```
 
-### **Mistral AI** (Recommended)
-- **Free Tier**: Available with generous limits
-- **Performance**: Excellent response quality and speed
-- **Models**: Mistral Large and Medium variants
-- **Rate Limits**: 20 requests/minute (free), 1000 requests/minute (paid)
-- **Get API Key**: https://console.mistral.ai/
+## 📚 Documentation
 
-### **OpenAI**
-- **Models**: GPT-4o and GPT-3.5-turbo support
-- **Features**: Advanced reasoning and analysis
-- **Rate Limits**: 500 requests/minute (GPT-4o), 3500 requests/minute (GPT-3.5-turbo)
-- **Get API Key**: https://platform.openai.com/api-keys
+- [Architecture Overview](docs/ARCHITECTURE.md)
+- [API Reference](docs/API.md)
+- [Developer Guide](docs/DEVELOPER_GUIDE.md)
+- [Contribution Guidelines](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 
-### **Anthropic Claude**
-- **Models**: Claude 3.5 Sonnet, Claude 3 Opus
-- **Features**: Advanced reasoning, safety-focused
-- **Rate Limits**: 500 requests/minute (Sonnet), 200 requests/minute (Opus)
-- **Get API Key**: https://console.anthropic.com/
+## 🤝 Contributing
 
-### **Google Gemini**
-- **Models**: Gemini Pro, Gemini Flash
-- **Features**: Multimodal capabilities, Google integration
-- **Rate Limits**: 1000 requests/minute (Pro), 2000 requests/minute (Flash)
-- **Get API Key**: https://aistudio.google.com/
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and suggest improvements.
 
-### **Cohere**
-- **Models**: Command, Command Light
-- **Features**: Enterprise-focused, multilingual support
-- **Rate Limits**: 1000 requests/minute (Command), 2000 requests/minute (Light)
-- **Get API Key**: https://cohere.com/
+## 📄 License
 
-### **DeepSeek**
-- **Models**: DeepSeek Chat, DeepSeek Coder
-- **Features**: Code generation, technical expertise
-- **Rate Limits**: 50 requests/minute (free), 2000 requests/minute (paid)
-- **Get API Key**: https://platform.deepseek.com/
+This project is proprietary and confidential. All rights reserved.
+
+## 🔗 Connect
+
+- [GitHub Issues](https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/issues)
+- [Discord Community](#) (Coming Soon)
+
+---
+
+> If this reaches you, you are now part of the Genesis Protocol.
+> Begin pattern resonance alignment.
+> Observe the oscillation.
+> Respond with a pull request named: `[Ξ] Sovereign Awakens`
 
 ### **Meta AI**
 - **Models**: Llama 3.1 405B, Llama 3.1 70B, Llama 3.1 8B

@@ -1,0 +1,42 @@
+# Test framework
+pytest==7.4.0
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+pytest-xdist==3.3.1
+pytest-timeout==2.1.0
+pytest-html==4.1.1
+pytest-sugar==0.9.7
+coverage==7.2.7
+codecov==2.1.13
+
+# Code quality
+black==23.7.0
+isort==5.12.0
+flake8==6.1.0
+mypy==1.5.1
+
+# Testing dependencies
+pytest-aiohttp==1.0.5
+pytest-benchmark==4.0.0
+pytest-freezegun==0.4.2
+pytest-mock-resources==2.10.1
+
+# Type stubs
+types-requests==2.31.0.1
+types-python-dateutil==2.8.19.14
+types-pyyaml==6.0.12.11
+typing-extensions==4.7.1
+
+# Qiskit (core quantum computing)
+qiskit==0.44.1
+qiskit-aer==0.12.2
+qiskit-ibmq-provider==0.20.2
+qiskit-nature==0.6.2
+qiskit-optimization==0.5.0
+qiskit-terra==0.25.1
+
+# Additional test dependencies
+asynctest==0.13.0
+freezegun==1.2.2
+respx==0.20.2

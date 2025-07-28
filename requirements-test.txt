@@ -28,15 +28,10 @@ types-python-dateutil==2.8.19.14
 types-pyyaml==6.0.12.11
 typing-extensions==4.7.1
 
-# Qiskit (core quantum computing)
-qiskit==0.44.1
-qiskit-aer==0.12.2
-qiskit-ibmq-provider==0.20.2
-qiskit-nature==0.6.2
-qiskit-optimization==0.5.0
-qiskit-terra==0.25.1
+# Qiskit (core quantum computing) - Temporarily removed for CI/CD testing
+# Will be added back with compatible versions in a separate requirements file
 
 # Additional test dependencies
 asynctest==0.13.0
-freezegun==1.2.2
+freezegun==1.5.3
 respx==0.20.2

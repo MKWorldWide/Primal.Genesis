@@ -1,14 +1,69 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ main, develop ]
+    tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [main]
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
 
+# Global environment variables
+env:
+  PYTHON_VERSION: '3.10'  # Default Python version
+  POETRY_VERSION: '1.8.2'  # Poetry version
+  DOCKER_BUILDKIT: 1  # Enable Docker BuildKit
+
+# Job definitions
 jobs:
+  # Linting and static analysis
+  lint:
+    name: Lint and Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+      
+      - name: Run Black
+        run: black --check --diff .
+      
+      - name: Run isort
+        run: isort --check-only .
+      
+      - name: Run flake8
+        run: flake8 . --count --max-complexity=10 --max-line-length=120 --show-source --statistics
+      
+      - name: Run mypy
+        run: mypy --install-types --non-interactive athenamist_integration/
+      
+      - name: Run Bandit (security)
+        run: |
+          pip install bandit
+          bandit -r athenamist_integration/ -x tests/
+  
+  # Unit tests with multiple Python versions
   test:
-    name: Test with Python ${{ matrix.python-version }}
+    name: Test Python ${{ matrix.python-version }}
+    needs: lint
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -16,9 +71,8 @@ jobs:
         python-version: ['3.9', '3.10', '3.11']
     
     services:
-      # Add any required services here (e.g., Redis, PostgreSQL)
       redis:
-        image: redis:latest
+        image: redis:7.2-alpine
         ports:
           - 6379:6379
         options: >-
@@ -28,76 +82,195 @@ jobs:
           --health-retries 5
     
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Cache Python dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-py${{ matrix.python-version }}-
-    
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gcc g++ make
-    
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-test.txt
-    
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --max-complexity=10 --max-line-length=120 --statistics
-    
-    - name: Type checking with mypy
-      run: |
-        pip install mypy
-        mypy --install-types --non-interactive athenamist_integration/
-    
-    - name: Run unit tests with pytest
-      run: |
-        python -m pytest tests/ -v --cov=athenamist_integration --cov-report=xml --cov-report=term
-      env:
-        PYTHONPATH: ${{ github.workspace }}
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
-    
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results-${{ matrix.python-version }}
-        path: |
-          test-results/**/*.xml
-          htmlcov/
-          coverage.xml
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc g++ make
+      
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-py${{ matrix.python-version }}-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+      
+      - name: Run unit tests with pytest
+        run: |
+          python -m pytest tests/unit/ -v \
+            --cov=athenamist_integration \
+            --cov-report=xml \
+            --cov-report=term \
+            --junitxml=junit/test-results.xml
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          REDIS_URL: redis://localhost:6379/0
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-py${{ matrix.python-version }}
+          path: |
+            junit/test-results.xml
+            coverage.xml
   
-  # Additional job for integration tests
-  integration-test:
+  # Integration tests
+  integration:
     name: Integration Tests
     needs: test
     runs-on: ubuntu-latest
     
+    services:
+      redis:
+        image: redis:7.2-alpine
+        ports:
+          - 6379:6379
+      
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+      
+      - name: Run integration tests
+        run: |
+          python -m pytest tests/integration/ -v \
+            --cov=athenamist_integration \
+            --cov-append \
+            --cov-report=xml \
+            --cov-report=term \
+            --junitxml=junit/integration-results.xml
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          REDIS_URL: redis://localhost:6379/0
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: |
+            junit/integration-results.xml
+            coverage.xml
+  
+  # Security scanning
+  security:
+    name: Security Scan
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'python:${{ env.PYTHON_VERSION }}-slim'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+  
+  # Build and push Docker image
+  build:
+    name: Build and Push Docker Image
+    needs: [test, integration, security]
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=semver,pattern={{version}}
+            type=sha,format=long
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=ghac,mode=max
+  
+  # Deploy to environment
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
+    needs: build
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'staging' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to environment
+        run: |
+          echo "Deploying to ${{ github.event.inputs.environment || 'staging' }} environment"
+          # Add your deployment commands here
+          # Example: kubectl apply -f k8s/${{ github.event.inputs.environment || 'staging' }}/
+      
+      - name: Verify deployment
+        run: |
+          echo "Verifying deployment to ${{ github.event.inputs.environment || 'staging' }}"
+          # Add verification steps here
+
     steps:
     - uses: actions/checkout@v4
     

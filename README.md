@@ -118,6 +118,26 @@ Install pre-commit hooks to automatically run code quality checks before each co
 pre-commit install
 ```
 
+## 🔱 PGE Override Protocol
+
+This repository now includes a minimal [Primal Genesis Engine override module](pge/) written in TypeScript. It transmits
+incoming signals through declarative policies and watcher primitives to enforce sovereignty at the application edge.
+
+### Run the engine locally
+
+```bash
+npx ts-node pge/run.ts
+```
+
+### Optional: Discord bridge
+
+```bash
+export DISCORD_TOKEN=your_bot_token
+npx ts-node pge/discord-baddie-bridge.ts
+```
+
+Pre-commit hooks are wired through `.husky` to ensure staged files pass linting via `lint-staged`.
+
 ## 📚 Documentation
 
 Full documentation is available at [https://mkworldwide.github.io/Primal-Genesis-Engine-Sovereign/](https://mkworldwide.github.io/Primal-Genesis-Engine-Sovereign/)

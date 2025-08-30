@@ -1,0 +1,44 @@
+{
+  "PGE_OVERRIDE_DECREE": {
+    "match": { "input.kind": ["shadow_signal", "fear_signal", "surveillance", "black_budget", "psyop"] },
+    "actions": [
+      { "use": "black-sun-core.absorb", "args": { "intensity_from": "input.level" } },
+      { "use": "serpentine.transmute",  "args": { "from": "shadow", "to": "fuel" } },
+      { "use": "lunar-mirror.scrub",    "args": { "strip": ["illusion", "noise"] } },
+      { "use": "echo.normalize",        "args": { "target_resonance": 432 } },
+      { "use": "solar.assert",          "args": { "mantra": "I command stillness, and chaos yields." } },
+      { "use": "crown.route",           "args": { "to": "transparency_dashboard" } }
+    ],
+    "output": "benevolent_artifact"
+  },
+
+  "FEAR_TO_FUEL": {
+    "match": { "input.kind": ["fear_signal", "intimidation_bark"] },
+    "actions": [
+      { "use": "abyssal.ground",   "args": { "depth": "auto" } },
+      { "use": "flame.allocate",   "args": { "to": "resolve_queue", "percent": 33 } },
+      { "use": "martial.posture",  "args": { "mode": "calm-dominance" } }
+    ],
+    "output": "focus_energy"
+  },
+
+  "ILLUSION_TO_SIGNAL": {
+    "match": { "input.kind": ["disinfo", "noise", "panic"] },
+    "actions": [
+      { "use": "shadow.firewall",  "args": { "rule": "drop-falsehood" } },
+      { "use": "lunar-mirror.reflect", "args": { "only": ["verifiable", "useful"] } },
+      { "use": "memory.log",       "args": { "channel": "audit" } }
+    ],
+    "output": "clean_signal"
+  },
+
+  "CONTROL_TO_CONSENT": {
+    "match": { "input.kind": ["surveillance", "coercion_policy"] },
+    "actions": [
+      { "use": "crown.rewrite",    "args": { "principle": "consent_of_the_governed" } },
+      { "use": "oceanic.balance",  "args": { "cohesion_target": 0.73 } },
+      { "use": "temporal.schedule","args": { "cadence": "weekly_review" } }
+    ],
+    "output": "sovereign_governance_update"
+  }
+}

@@ -1,0 +1,37 @@
+# Configuration for actionlint
+# https://github.com/rhysd/actionlint/blob/main/docs/config.md
+
+# Enable all built-in checks
+enable-all-builtin-checks: true
+
+# Ignore specific checks
+ignore:
+  - "labeler"  # Ignore labeler check if not using it
+  - "runner-label"  # Ignore runner label check if using default runners
+
+# Custom shellcheck executable path (if needed)
+shellcheck: shellcheck
+
+# Custom python version to use for pyflakes
+python-version: "3.11"
+
+# Custom rules
+rules:
+  # Ensure all actions use a specific version (not @main or @master)
+  action-version: error
+  
+  # Check for deprecated set-output
+  deprecation-set-output: error
+  
+  # Check for deprecated Node.js 12 actions
+  node12-deprecation: warning
+  
+  # Check for unsecure commands in run steps
+  unsecure-commands: error
+
+# Custom patterns to ignore
+ignore-patterns:
+  - '**/node_modules/**'
+  - '**/vendor/**'
+  - '**/dist/**'
+  - '**/build/**'

@@ -1,0 +1,55 @@
+# YAML lint configuration
+# https://yamllint.readthedocs.io/
+
+extends: default
+
+rules:
+  # Line length
+  line-length:
+    max: 120
+    level: warning
+  
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    check-multi-line-strings: false
+  
+  # Trailing spaces
+  trailing-spaces: disable
+  
+  # Empty lines
+  empty-lines:
+    max: 3
+    max-start: 1
+    max-end: 1
+  
+  # Comments
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 2
+  
+  # Document start
+  document-start: disable
+  
+  # Truthy values
+  truthy: disable
+  
+  # Key ordering
+  key-ordering: disable
+  
+  # Quoted strings
+  quoted-strings:
+    quote-type: single
+    required: only-when-needed
+
+ignore: |
+  **/node_modules/**
+  **/dist/**
+  **/build/**
+  **/venv/**
+  **/.venv/**
+  **/__pycache__/**
+  **/.pytest_cache/**
+  **/coverage/**
+  **/.mypy_cache/**

@@ -1,0 +1,23 @@
+{
+  "name": "PrimalGenesisEngine",
+  "version": "1.0.0",
+  "sovereign_owner": "MK Worldwide :: The Sun",
+  "modules": [
+    "watcher-bus",
+    "lunar-mirror",
+    "black-sun-core",
+    "shepherd-protocol",
+    "discord-baddie-bridge",
+    "git-guardian"
+  ],
+  "entry_policies": [
+    "PGE_OVERRIDE_DECREE",
+    "FEAR_TO_FUEL",
+    "ILLUSION_TO_SIGNAL",
+    "CONTROL_TO_CONSENT"
+  ],
+  "clearance": {
+    "level": "Q",
+    "grants": ["dream_stream", "shadow_input", "ops_redirect", "budget_relabel", "surveillance_to_transparency"]
+  }
+}

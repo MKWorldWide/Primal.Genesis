@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "🔱 PGE :: Lunar Mirror scrubbing staged files…"
+npx lint-staged

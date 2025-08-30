@@ -1,0 +1,15 @@
+{
+  "Flame":    { "id": 1,  "role": "energy_allocation",     "priority": 90 },
+  "Astral":   { "id": 2,  "role": "dream_packet_routing",  "priority": 70 },
+  "Echo":     { "id": 3,  "role": "resonance_filter",      "priority": 80 },
+  "Shadow":   { "id": 4,  "role": "illusion_firewall",     "priority": 95 },
+  "Temporal": { "id": 5,  "role": "timeline_manager",      "priority": 88 },
+  "Memory":   { "id": 6,  "role": "ancestral_log",         "priority": 72 },
+  "Oceanic":  { "id": 7,  "role": "mood_flow_control",     "priority": 68 },
+  "Martial":  { "id": 8,  "role": "defense_subroutine",    "priority": 92 },
+  "Serpentine":{ "id": 9,  "role": "transformation_engine","priority": 93 },
+  "Solar":    { "id": 10, "role": "sovereignty_kernel",    "priority": 99 },
+  "Lunar":    { "id": 11, "role": "reflection_scrubber",   "priority": 85 },
+  "Abyssal":  { "id": 12, "role": "void_stabilizer",       "priority": 97 },
+  "Crown":    { "id": 13, "role": "master_orchestrator",   "priority": 100 }
+}

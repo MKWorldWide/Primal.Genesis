@@ -1,4 +1,4 @@
-# Primal Genesis Engine™ – Local Development Framework
+# Primal.Genesis™ – Local Development Framework
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
@@ -6,7 +6,7 @@
 
 > **Our Mission**: Empower developers with tools for building sovereign, resilient, and intelligent systems locally.
 
-Welcome to the **Primal Genesis Engine**, a framework for local development of sovereign systems. This repository provides the foundational architecture for building secure, scalable applications with a focus on local development and testing.
+Welcome to the **Primal.Genesis**, a framework for local development of sovereign systems. This repository provides the foundational architecture for building secure, scalable applications with a focus on local development and testing.
 
 ## 🌟 Key Features
 
@@ -117,7 +117,7 @@ pre-commit install
 
 ## 🔱 PGE Override Protocol
 
-This repository now includes a minimal [Primal Genesis Engine override module](pge/) written in TypeScript. It transmits
+This repository now includes a minimal [Primal.Genesis override module](pge/) written in TypeScript. It transmits
 incoming signals through declarative policies and watcher primitives to enforce sovereignty at the application edge.
 
 ### Run the engine locally
@@ -200,7 +200,7 @@ python -m pytest --cov=primal_genesis tests/
 
 ## 🤖 AI Provider Integration
 
-The Primal Genesis Engine supports multiple AI providers for enhanced capabilities:
+The Primal.Genesis supports multiple AI providers for enhanced capabilities:
 
 ### Supported Providers
 
@@ -228,7 +228,7 @@ ANTHROPIC_API_KEY=your_anthropic_key
 ## 🧩 Architecture Overview
 
 ```
-Primal Genesis Engine/
+Primal.Genesis/
 ├── athenamist_integration/  # Core AI integration module
 │   ├── core/                # Core functionality
 │   │   ├── quantum_network.py

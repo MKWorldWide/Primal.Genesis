@@ -1,0 +1,220 @@
+"""
+Core Runtime System
+
+Provides a small coordinating layer that connects registry, policy, and memory
+to create the first internal nervous system of Primal Genesis Engine.
+
+Author: Primal Genesis Engine Team
+Version: 0.1.0
+"""
+
+from typing import Dict, Optional, Any
+from .registry import ModuleRegistry
+from .policy import PolicyEngine, PolicyRecord
+from .memory import MemoryStore, MemoryRecord
+
+
+class CoreRuntime:
+    """Small coordinating layer for registry, policy, and memory."""
+    
+    def __init__(self, 
+                 registry_path: Optional[str] = None,
+                 policy_path: Optional[str] = None,
+                 memory_path: Optional[str] = None):
+        self.registry = ModuleRegistry(registry_path)
+        self.policy_engine = PolicyEngine(policy_path)
+        self.memory_store = MemoryStore(memory_path)
+    
+    def execute_module_action(self, 
+                             module_name: str, 
+                             action_name: str, 
+                             payload: Optional[Dict] = None) -> Dict:
+        """
+        Execute a module action with policy evaluation and memory recording.
+        
+        Args:
+            module_name: Name of the module performing the action
+            action_name: Name of the action being performed
+            payload: Optional payload data for the action
+            
+        Returns:
+            Dict with execution result including:
+            - success: bool - whether action was allowed and executed
+            - allowed: bool - whether action was allowed by policy
+            - policy: PolicyRecord or None - the policy that was evaluated
+            - reason: str - explanation of the result
+            - memory_record: MemoryRecord or None - recorded memory if successful
+        """
+        # Validate inputs
+        if not module_name or not action_name:
+            return {
+                'success': False,
+                'allowed': False,
+                'policy': None,
+                'reason': 'Invalid module_name or action_name',
+                'memory_record': None
+            }
+        
+        # Check if module exists in registry
+        module = self.registry.get_module(module_name)
+        if module is None:
+            return {
+                'success': False,
+                'allowed': False,
+                'policy': None,
+                'reason': f'Module {module_name} not found in registry',
+                'memory_record': None
+            }
+        
+        # Check if module is enabled
+        if not module.enabled:
+            return {
+                'success': False,
+                'allowed': False,
+                'policy': None,
+                'reason': f'Module {module_name} is disabled',
+                'memory_record': None
+            }
+        
+        # Evaluate policy
+        policy_result = self.policy_engine.evaluate_action(module_name, action_name)
+        
+        if not policy_result['allowed']:
+            # Action denied by policy - record the denial
+            self._record_action_denied(module_name, action_name, policy_result)
+            
+            return {
+                'success': False,
+                'allowed': False,
+                'policy': policy_result['policy'],
+                'reason': policy_result['reason'],
+                'memory_record': None
+            }
+        
+        # Action allowed - execute and record
+        try:
+            # For now, we don't actually execute anything - just record the action
+            # In future phases, this could dispatch to actual module code
+            execution_result = self._execute_action(module_name, action_name, payload)
+            
+            # Record the successful action
+            memory_record = self._record_action_executed(module_name, action_name, execution_result)
+            
+            return {
+                'success': True,
+                'allowed': True,
+                'policy': policy_result['policy'],
+                'reason': policy_result['reason'],
+                'memory_record': memory_record
+            }
+            
+        except Exception as e:
+            # Record the execution failure
+            self._record_action_failed(module_name, action_name, str(e))
+            
+            return {
+                'success': False,
+                'allowed': True,
+                'policy': policy_result['policy'],
+                'reason': f'Execution failed: {str(e)}',
+                'memory_record': None
+            }
+    
+    def check_module_action(self, module_name: str, action_name: str) -> Dict:
+        """
+        Check if a module action is allowed without executing it.
+        
+        Returns:
+            Dict with policy evaluation result
+        """
+        if not module_name or not action_name:
+            return {
+                'allowed': False,
+                'policy': None,
+                'reason': 'Invalid module_name or action_name'
+            }
+        
+        # Check if module exists in registry
+        module = self.registry.get_module(module_name)
+        if module is None:
+            return {
+                'allowed': False,
+                'policy': None,
+                'reason': f'Module {module_name} not found in registry'
+            }
+        
+        # Check if module is enabled
+        if not module.enabled:
+            return {
+                'allowed': False,
+                'policy': None,
+                'reason': f'Module {module_name} is disabled'
+            }
+        
+        # Evaluate policy
+        return self.policy_engine.evaluate_action(module_name, action_name)
+    
+    def get_system_status(self) -> Dict:
+        """Get overall system status."""
+        return {
+            'modules': {
+                'total': len(self.registry.list_modules()),
+                'enabled': len(self.registry.list_enabled_modules())
+            },
+            'policies': {
+                'total': len(self.policy_engine.list_policies()),
+                'enabled': len(self.policy_engine.list_enabled_policies())
+            },
+            'memories': {
+                'total': self.memory_store.get_memory_count()
+            }
+        }
+    
+    def _execute_action(self, module_name: str, action_name: str, payload: Optional[Dict]) -> Dict:
+        """
+        Execute the actual action.
+        
+        For now, this is a placeholder that returns success.
+        In future phases, this could dispatch to actual module code.
+        """
+        # Placeholder execution - just return success with payload info
+        return {
+            'executed': True,
+            'payload': payload or {},
+            'message': f'Action {action_name} executed for module {module_name}'
+        }
+    
+    def _record_action_executed(self, module_name: str, action_name: str, execution_result: Dict) -> MemoryRecord:
+        """Record a successful action execution."""
+        content = f"Action '{action_name}' executed successfully for module '{module_name}'"
+        metadata = {
+            'action': action_name,
+            'execution_result': execution_result
+        }
+        
+        self.memory_store.create_memory(module_name, 'action_executed', content, metadata)
+        
+        # Return the created memory record
+        memories = self.memory_store.list_by_module(module_name, limit=1)
+        return memories[0] if memories else None
+    
+    def _record_action_denied(self, module_name: str, action_name: str, policy_result: Dict) -> None:
+        """Record a denied action."""
+        content = f"Action '{action_name}' denied for module '{module_name}'"
+        metadata = {
+            'action': action_name,
+            'policy_effect': 'deny',
+            'policy_reason': policy_result.get('reason', 'Unknown')
+        }
+        
+        self.memory_store.create_memory(module_name, 'action_denied', content, metadata)
+    
+    def _record_action_failed(self, module_name: str, action_name: str, error_message: str) -> None:
+        """Record a failed action execution."""
+        content = f"Action '{action_name}' failed for module '{module_name}': {error_message}"
+        metadata = {
+            'action': action_name,
+            'error': error_message
+        }
+        
+        self.memory_store.create_memory(module_name, 'action_failed', content, metadata)

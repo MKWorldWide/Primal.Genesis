@@ -10,6 +10,7 @@ Key components:
 - Policy engine and governance
 - Memory store and event logging
 - Core runtime orchestration
+- System visibility layer
 - Core utilities and helpers
 - Base classes and interfaces
 - Service orchestration
@@ -20,6 +21,7 @@ from .registry import ModuleRegistry, ModuleRecord
 from .policy import PolicyEngine, PolicyRecord
 from .memory import MemoryStore, MemoryRecord
 from .runtime import CoreRuntime
+from .visibility import VisibilityService
 
 # Base classes will be added in future phases
 # from .base import BaseService
@@ -29,5 +31,6 @@ __all__ = [
     "ModuleRegistry", "ModuleRecord",
     "PolicyEngine", "PolicyRecord", 
     "MemoryStore", "MemoryRecord",
-    "CoreRuntime"
+    "CoreRuntime",
+    "VisibilityService"
 ]

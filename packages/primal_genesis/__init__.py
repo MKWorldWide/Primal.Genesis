@@ -18,7 +18,8 @@ from .core import (
     ModuleRegistry, ModuleRecord,
     PolicyEngine, PolicyRecord,
     MemoryStore, MemoryRecord,
-    CoreRuntime
+    CoreRuntime,
+    VisibilityService
 )
 
 # Future exports will be added as modules are implemented
@@ -32,5 +33,6 @@ __all__ = [
     "ModuleRegistry", "ModuleRecord",
     "PolicyEngine", "PolicyRecord",
     "MemoryStore", "MemoryRecord", 
-    "CoreRuntime"
+    "CoreRuntime",
+    "VisibilityService"
 ]

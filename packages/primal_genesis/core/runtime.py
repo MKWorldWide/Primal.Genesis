@@ -145,16 +145,72 @@ class CoreRuntime:
     
     def _execute_action(self, module_name: str, action_name: str, payload: Optional[Dict]) -> Dict:
         """
-        Execute the actual action.
+        Execute the actual action with improved realism and structured results.
         
-        For now, this is a placeholder that returns success.
+        For now, this simulates execution with realistic outcomes.
         In future phases, this could dispatch to actual module code.
         """
-        # Placeholder execution - just return success with payload info
+        # Get module info for more realistic execution
+        module = self.registry.get_module(module_name)
+        if not module:
+            return {
+                'executed': False,
+                'execution_mode': 'simulated',
+                'outcome': 'error',
+                'error': 'Module not found during execution',
+                'payload': payload or {},
+                'execution_details': {
+                    'module_type': 'unknown',
+                    'action': action_name,
+                    'simulated': True
+                }
+            }
+        
+        # Simulate different execution outcomes based on module type and action
+        execution_mode = 'simulated'
+        outcome = 'success'
+        execution_details = {
+            'module_type': module.module_type,
+            'module_location': module.location,
+            'module_entrypoint': module.entrypoint,
+            'action': action_name,
+            'simulated': True,
+            'execution_time': '0.001s'  # Simulated execution time
+        }
+        
+        # Add some realistic variation based on module type
+        if module.module_type == 'core':
+            execution_details.update({
+                'execution_context': 'core_system',
+                'privilege_level': 'system',
+                'side_effects': 'configuration_read'
+            })
+        elif module.module_type == 'frontend':
+            execution_details.update({
+                'execution_context': 'ui_interaction',
+                'privilege_level': 'user',
+                'side_effects': 'display_update'
+            })
+        elif module.module_type == 'tooling':
+            execution_details.update({
+                'execution_context': 'development_tool',
+                'privilege_level': 'developer',
+                'side_effects': 'file_system_access'
+            })
+        elif module.module_type == 'intelligence':
+            execution_details.update({
+                'execution_context': 'ai_processing',
+                'privilege_level': 'analyst',
+                'side_effects': 'data_analysis'
+            })
+        
         return {
             'executed': True,
+            'execution_mode': execution_mode,
+            'outcome': outcome,
             'payload': payload or {},
-            'message': f'Action {action_name} executed for module {module_name}'
+            'execution_details': execution_details,
+            'message': f'Action {action_name} executed for module {module_name} ({execution_mode} mode)'
         }
     
     def _record_action_executed(self, module_name: str, action_name: str, execution_result: Dict) -> MemoryRecord:

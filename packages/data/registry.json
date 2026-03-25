@@ -6,7 +6,7 @@
     "version": "0.1.0",
     "enabled": true,
     "location": "packages/primal_genesis",
-    "entrypoint": "packages.primal_genesis"
+    "entrypoint": "primal_genesis"
   },
   "console": {
     "name": "console",
@@ -42,6 +42,6 @@
     "version": "0.1.0",
     "enabled": true,
     "location": "packages/athena",
-    "entrypoint": "packages/athena"
+    "entrypoint": "athena"
   }
 }

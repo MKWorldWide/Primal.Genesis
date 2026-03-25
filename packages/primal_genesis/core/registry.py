@@ -113,7 +113,7 @@ class ModuleRegistry:
                 description="Python core package for Primal Genesis Engine",
                 version="0.1.0",
                 location="packages/primal_genesis",
-                entrypoint="packages.primal_genesis"
+                entrypoint="primal_genesis"  # Public import identity
             ),
             ModuleRecord(
                 name="console",
@@ -121,7 +121,7 @@ class ModuleRegistry:
                 description="React/TypeScript console UI application",
                 version="0.1.0",
                 location="apps/console",
-                entrypoint="apps/console/src"
+                entrypoint="apps/console/src"  # Repo-relative primary runtime path
             ),
             ModuleRecord(
                 name="override-core",
@@ -129,7 +129,7 @@ class ModuleRegistry:
                 description="Node.js development tooling and override system",
                 version="0.1.0",
                 location="apps/override-core",
-                entrypoint="apps/override-core/index.js"
+                entrypoint="apps/override-core/index.js"  # Repo-relative executable
             ),
             ModuleRecord(
                 name="pge-runner",
@@ -137,7 +137,7 @@ class ModuleRegistry:
                 description="TypeScript policy engine and governance system",
                 version="0.1.0",
                 location="apps/pge-runner",
-                entrypoint="apps/pge-runner/pge.ts"
+                entrypoint="apps/pge-runner/pge.ts"  # Repo-relative executable
             ),
             ModuleRecord(
                 name="athena",
@@ -145,7 +145,7 @@ class ModuleRegistry:
                 description="Cross-project intelligence system",
                 version="0.1.0",
                 location="packages/athena",
-                entrypoint="packages/athena"
+                entrypoint="athena"  # Public import identity
             )
         ]
         

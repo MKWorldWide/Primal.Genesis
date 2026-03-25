@@ -56,6 +56,7 @@ for module in modules:
 console_module = registry.get_module("console")
 if console_module:
     print(f"Console app location: {console_module.location}")
+    print(f"Console app entrypoint: {console_module.entrypoint}")
 
 # Enable/disable modules
 registry.disable_module("pge-runner")
@@ -67,10 +68,15 @@ new_module = ModuleRecord(
     module_type="extension",
     description="My custom extension",
     version="1.0.0",
-    location="extensions/my_module"
+    location="extensions/my_module",
+    entrypoint="extensions/my_module/index.js"  # Repo-relative executable
 )
 registry.register_module(new_module)
 ```
+
+**Entrypoint Semantics**:
+- **Python packages**: Use public import identity (`primal_genesis`, `athena`)
+- **JS/TS apps**: Use repo-relative executable path (`apps/console/src`, `apps/override-core/index.js`)
 
 ### Advanced Configuration
 

@@ -9,7 +9,6 @@ Version: 0.1.0
 """
 
 import json
-import os
 from dataclasses import dataclass, asdict
 from typing import Dict, List, Optional
 from pathlib import Path
@@ -17,7 +16,7 @@ from pathlib import Path
 
 @dataclass
 class ModuleRecord:
-    """Represents a module in the Primal Genesis Engine."""
+    """Represents a module in Primal Genesis Engine."""
     name: str
     module_type: str
     description: str
@@ -39,7 +38,14 @@ class ModuleRegistry:
     
     def __init__(self, storage_path: Optional[str] = None):
         self._modules: Dict[str, ModuleRecord] = {}
-        self.storage_path = storage_path or "registry.json"
+        # Use deterministic default path relative to package location
+        if storage_path is None:
+            # Default to data directory within package
+            package_root = Path(__file__).parent.parent.parent
+            self.storage_path = package_root / "data" / "registry.json"
+        else:
+            self.storage_path = Path(storage_path)
+        
         self._load_registry()
     
     def register_module(self, module: ModuleRecord) -> None:
@@ -77,7 +83,7 @@ class ModuleRegistry:
     
     def _load_registry(self) -> None:
         """Load registry from JSON file."""
-        if os.path.exists(self.storage_path):
+        if self.storage_path.exists():
             try:
                 with open(self.storage_path, 'r') as f:
                     data = json.load(f)
@@ -91,6 +97,9 @@ class ModuleRegistry:
     
     def _save_registry(self) -> None:
         """Save registry to JSON file."""
+        # Ensure parent directory exists
+        self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+        
         data = {name: module.to_dict() for name, module in self._modules.items()}
         with open(self.storage_path, 'w') as f:
             json.dump(data, f, indent=2)

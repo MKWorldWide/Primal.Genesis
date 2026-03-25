@@ -6,6 +6,9 @@
 
 Successfully migrated React/TypeScript console components from legacy root `src/` structure into their new home under `apps/console/`. This establishes the console as a real application boundary with proper frontend structure.
 
+“Phase 3B included minimal support-file creation and temporary import neutralization to preserve console integrity after relocation.”
+
+
 ## What Moved
 
 ### Folders Migrated

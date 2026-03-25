@@ -1,10 +1,23 @@
 # Athena Integration Scaffold
 
-**Reserved namespace for future Athena intelligence layer**
+**LEGACY PLACEHOLDER - DO NOT USE FOR NEW DEVELOPMENT**
 
-## Purpose
+## ⚠️ Legacy Status Notice
 
-This directory is reserved for the future Athena intelligence integration with the Primal Genesis Engine.
+This directory is a **legacy placeholder** and should not be used for new development.
+
+**Athena's new permanent home is now:** `packages/athena/`
+
+## Migration Information
+
+- **New Location**: `packages/athena/` (Athena's sovereign package)
+- **Current Status**: Legacy scaffold pending migration
+- **Migration Plan**: Will be migrated to new package structure in future phase
+- **Recommendation**: Use `packages/athena/` for all new Athena-related development
+
+## Purpose (Historical)
+
+This directory was originally reserved for the future Athena intelligence integration with the Primal Genesis Engine.
 
 ## Current State
 

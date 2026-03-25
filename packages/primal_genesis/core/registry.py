@@ -30,6 +30,11 @@ class ModuleRecord:
 
     @classmethod
     def from_dict(cls, data: Dict) -> "ModuleRecord":
+        # Basic validation for required fields
+        if not isinstance(data, dict):
+            raise ValueError("Module data must be a dictionary")
+        if 'name' not in data or 'module_type' not in data:
+            raise ValueError("Module data must contain 'name' and 'module_type' fields")
         return cls(**data)
 
 
@@ -49,12 +54,16 @@ class ModuleRegistry:
         self._load_registry()
     
     def register_module(self, module: ModuleRecord) -> None:
-        """Register a new module."""
+        """Register a new module. Overwrites existing module with same name."""
+        if not module or not module.name:
+            raise ValueError("Module must have a valid name")
         self._modules[module.name] = module
         self._save_registry()
     
     def get_module(self, name: str) -> Optional[ModuleRecord]:
         """Get a module by name."""
+        if not name or not isinstance(name, str):
+            return None
         return self._modules.get(name)
     
     def list_modules(self) -> List[ModuleRecord]:
@@ -67,6 +76,8 @@ class ModuleRegistry:
     
     def enable_module(self, name: str) -> bool:
         """Enable a module."""
+        if not name or not isinstance(name, str):
+            return False
         if name in self._modules:
             self._modules[name].enabled = True
             self._save_registry()
@@ -75,6 +86,8 @@ class ModuleRegistry:
     
     def disable_module(self, name: str) -> bool:
         """Disable a module."""
+        if not name or not isinstance(name, str):
+            return False
         if name in self._modules:
             self._modules[name].enabled = False
             self._save_registry()
@@ -85,24 +98,44 @@ class ModuleRegistry:
         """Load registry from JSON file."""
         if self.storage_path.exists():
             try:
-                with open(self.storage_path, 'r') as f:
+                with open(self.storage_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
+                    if not isinstance(data, dict):
+                        raise ValueError("Registry data must be a dictionary")
+                    
+                    loaded_modules = {}
                     for name, module_data in data.items():
-                        self._modules[name] = ModuleRecord.from_dict(module_data)
-            except (json.JSONDecodeError, KeyError, TypeError):
+                        try:
+                            module = ModuleRecord.from_dict(module_data)
+                            # Ensure name consistency
+                            if module.name != name:
+                                module.name = name
+                            loaded_modules[name] = module
+                        except (ValueError, TypeError) as e:
+                            # Skip invalid modules but continue loading others
+                            print(f"Warning: Skipping invalid module '{name}': {e}")
+                            continue
+                    
+                    self._modules = loaded_modules
+                    
+            except (json.JSONDecodeError, ValueError, KeyError, TypeError) as e:
                 # Start fresh if file is corrupted
+                print(f"Warning: Registry file corrupted, starting fresh: {e}")
                 self._seed_default_modules()
         else:
             self._seed_default_modules()
     
     def _save_registry(self) -> None:
         """Save registry to JSON file."""
-        # Ensure parent directory exists
-        self.storage_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        data = {name: module.to_dict() for name, module in self._modules.items()}
-        with open(self.storage_path, 'w') as f:
-            json.dump(data, f, indent=2)
+        try:
+            # Ensure parent directory exists
+            self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            data = {name: module.to_dict() for name, module in self._modules.items()}
+            with open(self.storage_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except (OSError, IOError) as e:
+            print(f"Warning: Failed to save registry: {e}")
     
     def _seed_default_modules(self) -> None:
         """Seed registry with default modules."""

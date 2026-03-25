@@ -155,14 +155,16 @@ class CoreRuntime:
         if not module:
             return {
                 'executed': False,
-                'execution_mode': 'simulated',
+                'execution_mode': 'local-simulated',
                 'outcome': 'error',
                 'error': 'Module not found during execution',
                 'payload': payload or {},
                 'execution_details': {
                     'module_type': 'unknown',
                     'action': action_name,
-                    'simulated': True
+                    'simulated': True,
+                    'execution_scope': 'local-only',
+                    'side_effect_level': 'read-only'
                 }
             }
         

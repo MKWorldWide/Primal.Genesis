@@ -43,53 +43,36 @@ class CoreRuntime:
             - allowed: bool - whether action was allowed by policy
             - policy: PolicyRecord or None - the policy that was evaluated
             - reason: str - explanation of the result
-            - memory_record: MemoryRecord or None - recorded memory if successful
+            - memory_record: MemoryRecord or None - recorded memory
         """
         # Validate inputs
         if not module_name or not action_name:
-            return {
-                'success': False,
-                'allowed': False,
-                'policy': None,
-                'reason': 'Invalid module_name or action_name',
-                'memory_record': None
-            }
+            result = self._create_result(False, False, None, 'Invalid module_name or action_name', None)
+            self._record_validation_failure('execute_module_action', 'Invalid inputs', result)
+            return result
         
         # Check if module exists in registry
         module = self.registry.get_module(module_name)
         if module is None:
-            return {
-                'success': False,
-                'allowed': False,
-                'policy': None,
-                'reason': f'Module {module_name} not found in registry',
-                'memory_record': None
-            }
+            result = self._create_result(False, False, None, f'Module {module_name} not found in registry', None)
+            self._record_validation_failure(module_name, 'Module not found', result)
+            return result
         
         # Check if module is enabled
         if not module.enabled:
-            return {
-                'success': False,
-                'allowed': False,
-                'policy': None,
-                'reason': f'Module {module_name} is disabled',
-                'memory_record': None
-            }
+            result = self._create_result(False, False, None, f'Module {module_name} is disabled', None)
+            self._record_validation_failure(module_name, 'Module disabled', result)
+            return result
         
         # Evaluate policy
         policy_result = self.policy_engine.evaluate_action(module_name, action_name)
         
         if not policy_result['allowed']:
             # Action denied by policy - record the denial
-            self._record_action_denied(module_name, action_name, policy_result)
+            memory_record = self._record_action_denied(module_name, action_name, policy_result)
             
-            return {
-                'success': False,
-                'allowed': False,
-                'policy': policy_result['policy'],
-                'reason': policy_result['reason'],
-                'memory_record': None
-            }
+            result = self._create_result(False, False, policy_result['policy'], policy_result['reason'], memory_record)
+            return result
         
         # Action allowed - execute and record
         try:
@@ -100,25 +83,15 @@ class CoreRuntime:
             # Record the successful action
             memory_record = self._record_action_executed(module_name, action_name, execution_result)
             
-            return {
-                'success': True,
-                'allowed': True,
-                'policy': policy_result['policy'],
-                'reason': policy_result['reason'],
-                'memory_record': memory_record
-            }
+            result = self._create_result(True, True, policy_result['policy'], policy_result['reason'], memory_record)
+            return result
             
         except Exception as e:
             # Record the execution failure
             self._record_action_failed(module_name, action_name, str(e))
             
-            return {
-                'success': False,
-                'allowed': True,
-                'policy': policy_result['policy'],
-                'reason': f'Execution failed: {str(e)}',
-                'memory_record': None
-            }
+            result = self._create_result(False, True, policy_result['policy'], f'Execution failed: {str(e)}', None)
+            return result
     
     def check_module_action(self, module_name: str, action_name: str) -> Dict:
         """
@@ -198,8 +171,8 @@ class CoreRuntime:
         memories = self.memory_store.list_by_module(module_name, limit=1)
         return memories[0] if memories else None
     
-    def _record_action_denied(self, module_name: str, action_name: str, policy_result: Dict) -> None:
-        """Record a denied action."""
+    def _record_action_denied(self, module_name: str, action_name: str, policy_result: Dict) -> MemoryRecord:
+        """Record a denied action and return the memory record."""
         content = f"Action '{action_name}' denied for module '{module_name}'"
         metadata = {
             'action': action_name,
@@ -208,6 +181,10 @@ class CoreRuntime:
         }
         
         self.memory_store.create_memory(module_name, 'action_denied', content, metadata)
+        
+        # Return the created memory record
+        memories = self.memory_store.list_by_module(module_name, limit=1)
+        return memories[0] if memories else None
     
     def _record_action_failed(self, module_name: str, action_name: str, error_message: str) -> None:
         """Record a failed action execution."""
@@ -218,3 +195,23 @@ class CoreRuntime:
         }
         
         self.memory_store.create_memory(module_name, 'action_failed', content, metadata)
+    
+    def _record_validation_failure(self, module_name: str, failure_type: str, result: Dict) -> None:
+        """Record a validation failure."""
+        content = f"Validation failed for module '{module_name}': {failure_type}"
+        metadata = {
+            'failure_type': failure_type,
+            'result': result
+        }
+        
+        self.memory_store.create_memory('runtime', 'validation_failure', content, metadata)
+    
+    def _create_result(self, success: bool, allowed: bool, policy: Optional[PolicyRecord], reason: str, memory_record: Optional[MemoryRecord]) -> Dict:
+        """Create a consistent result structure."""
+        return {
+            'success': success,
+            'allowed': allowed,
+            'policy': policy,
+            'reason': reason,
+            'memory_record': memory_record
+        }

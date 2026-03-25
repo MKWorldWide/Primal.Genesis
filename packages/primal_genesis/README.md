@@ -18,12 +18,15 @@ Provides the core Python functionality including:
 
 ```python
 # Import the configuration system
-from packages.primal_genesis import Config
+from primal_genesis import Config
 # Or alternatively:
-from packages.primal_genesis.core import Config
+from primal_genesis.core import Config
 
 # Create a configuration instance
 config = Config()
+```
+
+**Note**: `packages/` is a repository organization folder, not part of the public package identity. The intended public package name is `primal_genesis`.
 
 # Get configuration values
 debug_mode = config.get("debug", False)

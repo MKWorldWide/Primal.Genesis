@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-AthenaMist-Blended Setup and Installation Script
-================================================
+Primal Genesis Engine Setup and Installation Script
+====================================================
 
 This module provides comprehensive setup and installation functionality for the
-AthenaMist-Blended AI integration framework.
+Primal Genesis Engine.
 
 Key Features:
 - Automated Python version compatibility checking
 - Virtual environment creation and management
 - Dependency installation and validation
-- Configuration setup and API key management
+- Basic configuration setup
 - System health checks and validation
 - Error handling and recovery mechanisms
 
@@ -18,7 +18,7 @@ Installation Process:
 1. Python version compatibility verification
 2. Virtual environment creation and activation
 3. Dependency package installation
-4. Configuration setup and API key management
+4. Basic configuration setup
 5. System validation and health checks
 
 System Requirements:
@@ -39,7 +39,7 @@ Error Handling:
 - User-friendly error messages
 - Installation rollback capabilities
 
-Author: AthenaMist Development Team
+Author: Primal Genesis Engine Team
 Version: 1.0.0
 Last Updated: 2024-12-19
 """
@@ -97,7 +97,7 @@ def run_command(command: str, description: str) -> bool:
 
 def check_python_version() -> bool:
     """
-    Verify Python version compatibility with AthenaMist-Blended requirements
+    Verify Python version compatibility with Primal Genesis Engine requirements
     
     This function checks the current Python version against minimum requirements
     and provides detailed compatibility information.
@@ -130,7 +130,7 @@ def check_python_version() -> bool:
 
 def create_virtual_environment() -> bool:
     """
-    Create and configure Python virtual environment for AthenaMist-Blended
+    Create and configure Python virtual environment for Primal Genesis Engine
     
     This function manages virtual environment creation and validation to ensure
     isolated dependency management.
@@ -163,10 +163,10 @@ def create_virtual_environment() -> bool:
 
 def install_dependencies() -> bool:
     """
-    Install all required dependencies for AthenaMist-Blended
+    Install all required dependencies for Primal Genesis Engine
     
     This function handles the installation of all necessary Python packages
-    and dependencies for the AthenaMist-Blended framework.
+    and dependencies for the Primal Genesis Engine framework.
     
     Returns:
         bool: True if dependencies installed successfully, False otherwise
@@ -197,24 +197,24 @@ def install_dependencies() -> bool:
 
 def setup_configuration() -> bool:
     """
-    Initialize and configure AthenaMist-Blended system settings
+    Initialize and configure Primal Genesis Engine system settings
     
-    This function sets up the configuration system including API key management,
-    system preferences, and integration settings.
+    This function sets up the configuration system including basic settings
+    and local development preferences.
     
     Returns:
         bool: True if configuration setup successful, False otherwise
         
     Configuration Features:
-        - API key setup and validation
-        - System preference configuration
-        - Integration settings management
+        - Basic application settings
+        - Server configuration
+        - Local development preferences
         - Security configuration
         - Default value establishment
         
     Setup Process:
         - Import configuration module
-        - Execute API key setup
+        - Execute basic setup
         - Validate configuration
         - Establish default settings
         - Verify system readiness
@@ -224,14 +224,14 @@ def setup_configuration() -> bool:
     
     try:
         # Import and execute configuration setup
-        from config import setup_api_keys
-        setup_api_keys()
+        from config import setup_configuration
+        setup_configuration()
         return True
         
     except Exception as e:
         # Handle configuration setup errors
         print(f"❌ Configuration setup failed: {e}")
-        print("💡 You can still run AthenaMist with default settings.")
+        print("💡 You can still run Primal Genesis Engine with default settings.")
         return False
 
 def validate_installation() -> bool:
@@ -291,14 +291,14 @@ def main():
     """
     Main setup function with comprehensive installation orchestration
     
-    This function orchestrates the complete setup process for AthenaMist-Blended,
+    This function orchestrates the complete setup process for Primal Genesis Engine,
     including all necessary checks, installations, and configurations.
     
     Setup Process:
         1. Python version compatibility verification
         2. Virtual environment creation and setup
         3. Dependency package installation
-        4. Configuration system initialization
+        4. Basic configuration system initialization
         5. Installation validation and testing
         6. User guidance and next steps
         
@@ -308,7 +308,7 @@ def main():
         - User-friendly guidance
         - Installation rollback support
     """
-    print("🌟 AthenaMist-Blended Setup")
+    print("🌟 Primal Genesis Engine Setup")
     print("=" * 40)
     
     # Step 1: Check Python version compatibility
@@ -333,17 +333,15 @@ def main():
     
     # Installation completion and user guidance
     print("\n🎉 Setup complete!")
-    print("\n🚀 To start AthenaMist-Blended:")
-    print("  ./run_athenamist.sh")
+    print("\n🚀 To start Primal Genesis Engine:")
+    print("  python -m primal_genesis.app")
     print("\n📖 For more information, see README.md")
     print("\n🔧 Configuration:")
-    print("  - Edit config.py for API key setup")
+    print("  - Edit config.py for basic settings")
     print("  - Set environment variables for secure key management")
-    print("  - Configure SAM integration settings")
     print("\n💡 Next Steps:")
-    print("  - Configure your AI provider API keys")
-    print("  - Set up SAM integration for government data")
-    print("  - Explore the interactive demo interface")
+    print("  - Configure your basic application settings")
+    print("  - Explore the interactive interface")
     print("  - Review the comprehensive documentation")
 
 if __name__ == "__main__":

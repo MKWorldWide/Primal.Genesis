@@ -21,7 +21,6 @@ Welcome to the Primal Genesis Engine developer guide! This document provides com
 
 - Python 3.9+
 - Git
-- (Optional) Docker
 - (Optional) Node.js (for frontend development)
 
 ### Quick Start
@@ -47,25 +46,30 @@ Welcome to the Primal Genesis Engine developer guide! This document provides com
 
 4. **Verify installation**:
    ```bash
-   python -c "import athenamist_integration; print('Installation successful!')"
+   python -c "import primal_genesis; print('Installation successful!')"
    ```
 
 ## Project Structure
 
 ```
 primal-genesis-engine/
-├── athenamist_integration/  # Core package
+├── primal_genesis/          # Core package
+│   ├── __init__.py
 │   ├── core/                # Core functionality
 │   │   ├── __init__.py
-│   │   ├── quantum_network.py
-│   │   ├── quantum_memory.py
-│   │   └── quantum_sync.py
-│   ├── api/                 # API endpoints
+│   │   ├── engine.py         # Main engine
+│   │   ├── config.py         # Configuration management
+│   │   └── security.py       # Security utilities
+│   ├── web/                 # Web interface
+│   │   ├── __init__.py
+│   │   ├── server.py         # Web server
+│   │   └── api.py           # API endpoints
 │   └── utils/               # Utility functions
-├── tests/                   # Test suite
-│   ├── unit/               # Unit tests
-│   └── integration/        # Integration tests
-├── docs/                   # Documentation
+├── config.py                   # Configuration management
+├── setup.py                    # Setup and installation
+├── requirements.txt             # Python dependencies
+├── requirements-test.txt        # Development dependencies
+└── README.md                  # Project documentation
 ├── scripts/                # Utility scripts
 └── config/                 # Configuration files
 ```

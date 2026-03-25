@@ -1,30 +1,18 @@
 #!/usr/bin/env python3
 """
-AthenaMist Configuration Management System
-==========================================
+Primal Genesis Engine Configuration Management System
+=====================================================
 
-This module provides centralized configuration management for the AthenaMist AI integration framework.
-It handles API key management, provider selection, and persistent settings storage with security
-considerations for sensitive data.
+This module provides centralized configuration management for the Primal Genesis Engine.
+It handles basic application settings and local development preferences.
 
 Key Features:
-- Secure API key storage and retrieval
-- Environment variable fallback support
-- JSON-based persistent configuration
-- Interactive setup wizard
-- Provider-specific configuration management
+- Basic configuration management
+- Environment variable support
+- JSON-based persistent settings
+- Local development focus
 
-Security Considerations:
-- API keys are stored in JSON format (consider encryption for production)
-- Environment variables provide alternative secure storage
-- Config file permissions should be restricted in production
-
-Dependencies:
-- os: Environment variable access
-- json: Configuration serialization
-- pathlib: Cross-platform path handling
-
-Author: AthenaMist Development Team
+Author: Primal Genesis Engine Team
 Version: 1.0.0
 Last Updated: 2024-12-19
 """
@@ -35,17 +23,16 @@ from pathlib import Path
 
 class Config:
     """
-    Configuration Manager for AthenaMist AI Integration Framework
+    Configuration Manager for Primal Genesis Engine
     
     This class provides a centralized interface for managing all configuration settings
-    including AI provider API keys, SAM integration settings, and application preferences.
-    It implements a hierarchical configuration system that prioritizes user settings
-    over defaults and provides fallback to environment variables.
+    for local development. It implements a hierarchical configuration system that prioritizes
+    user settings over defaults and provides fallback to environment variables.
     
     Architecture:
     - Default configuration provides safe fallbacks
     - JSON file storage enables persistent settings
-    - Environment variable support for secure deployments
+    - Environment variable support for development
     - Validation ensures configuration integrity
     
     Performance Considerations:
@@ -54,12 +41,11 @@ class Config:
     - Minimal I/O operations during runtime
     
     Security Features:
-    - API key validation and sanitization
-    - Configurable file permissions
+    - Basic configuration validation
     - Environment variable fallback for sensitive data
     """
     
-    def __init__(self, config_file: str = "athenamist_config.json"):
+    def __init__(self, config_file: str = "primal_genesis_config.json"):
         """
         Initialize configuration manager with specified config file
         
@@ -102,66 +88,18 @@ class Config:
         - Sanitizes loaded configuration values
         - Prevents path traversal attacks
         """
-        # Comprehensive default configuration with detailed documentation
+        # Basic default configuration for local development
         default_config = {
-            "ai_provider": "mistral",  # Primary AI provider: "mistral" or "openai"
-            "ai_api_key": "",          # Encrypted API key for AI provider
-            "sam_api_key": "gkwM6H5pnxU2qEkPJLp4UT9OwBfuLLonsovaU2Im",  # SAM API key
-            "default_mode": "creative", # Default AI interaction mode
-            "max_history": 50,         # Maximum conversation history entries
-            "auto_save": True,         # Enable automatic configuration persistence
-            "log_level": "INFO",       # Application logging level
-            "cache_duration": 3600,    # Cache duration in seconds
-            "timeout": 30,             # API request timeout in seconds
-            "retry_attempts": 3,       # Number of API retry attempts
-            
-            # Quantum Network Configuration
-            "quantum_networks": {
-                "divina_l3": {
-                    "enabled": True,
-                    "endpoint": "https://quantum.divinal3.net/api/v1",
-                    "api_key": "",
-                    "quantum_circuit_depth": 1024,
-                    "entanglement_threshold": 0.9,
-                    "resonance_frequency": 144.000  # MHz
-                },
-                "novasanctum": {
-                    "enabled": True,
-                    "endpoint": "https://api.novasanctum.quantum/sovereign",
-                    "api_key": "",
-                    "quantum_resistant": True,
-                    "handshake_required": True,
-                    "max_retries": 5
-                },
-                "whispurrnet": {
-                    "enabled": True,
-                    "bootstrap_nodes": ["node1.whispurr.quantum:14400", "node2.whispurr.quantum:14400"],
-                    "network_id": "sovereign-mesh-psi9",
-                    "enable_quantum_entanglement": True,
-                    "gossip_interval": 60,  # seconds
-                    "max_peers": 64
-                }
-            },
-            
-            # Advanced Quantum Settings
-            "quantum_entanglement": {
-                "enable_cross_dimensional": True,
-                "max_parallel_qubits": 128,
-                "quantum_key_distribution": {
-                    "algorithm": "BB84",
-                    "key_refresh_interval": 3600  # seconds
-                },
-                "resonance_patterns": ["delta", "phi", "theta"]
-            },
-            
-            # Security Settings
-            "security": {
-                "enable_quantum_encryption": True,
-                "enable_sovereign_signatures": True,
-                "signature_algorithm": "XMSS",
-                "enable_quantum_key_rotation": True,
-                "key_rotation_interval": 86400  # 24 hours in seconds
-            }
+            "app_name": "Primal Genesis Engine",
+            "version": "1.0.0",
+            "debug": True,
+            "log_level": "INFO",
+            "host": "localhost",
+            "port": 8000,
+            "auto_save": True,
+            "cache_duration": 3600,
+            "timeout": 30,
+            "retry_attempts": 3
         }
         
         # Attempt to load existing configuration file
@@ -249,123 +187,51 @@ class Config:
         - Value type checking for critical settings
         - Sanitization of sensitive values
         """
-        # Validate and sanitize configuration values
-        if key == "ai_api_key" and value:
-            # Basic API key format validation
-            if len(value) < 10:
-                raise ValueError("API key appears to be too short")
-        
         self.config[key] = value
         self.save_config()
     
-    def get_ai_api_key(self) -> str:
+    def get_app_name(self) -> str:
         """
-        Retrieve AI API key with fallback hierarchy
-        
-        This method implements a secure API key retrieval strategy:
-        1. Check configuration file first
-        2. Fall back to environment variables
-        3. Provider-specific environment variable names
-        4. Empty string if no key found
-        
-        Security Considerations:
-        - Environment variables provide secure storage
-        - No key logging or exposure
-        - Provider-specific key isolation
+        Get application name
         
         Returns:
-            str: API key or empty string if not found
+            str: Application name
         """
-        # Check configuration file first (user preference)
-        api_key = self.config.get("ai_api_key", "")
-        if api_key:
-            return api_key
-        
-        # Fall back to environment variables (secure deployment)
-        provider = self.config.get("ai_provider", "mistral")
-        if provider == "mistral":
-            return os.getenv("MISTRAL_API_KEY", "")
-        elif provider == "openai":
-            return os.getenv("OPENAI_API_KEY", "")
-        
-        return ""
+        return self.config.get("app_name", "Primal Genesis Engine")
     
-    def set_ai_api_key(self, api_key: str):
+    def get_host(self) -> str:
         """
-        Store AI API key in configuration
-        
-        Args:
-            api_key (str): API key to store
-            
-        Security Notes:
-        - Key is stored in plain text in JSON file
-        - Consider encryption for production use
-        - Environment variables provide alternative secure storage
-        """
-        self.set("ai_api_key", api_key)
-    
-    def get_sam_api_key(self) -> str:
-        """
-        Retrieve SAM API key
+        Get server host
         
         Returns:
-            str: SAM API key from configuration
+            str: Server host
         """
-        return self.config.get("sam_api_key", "")
+        return self.config.get("host", "localhost")
     
-    def set_sam_api_key(self, api_key: str):
+    def get_port(self) -> int:
         """
-        Store SAM API key in configuration
-        
-        Args:
-            api_key (str): SAM API key to store
-        """
-        self.set("sam_api_key", api_key)
-    
-    def get_ai_provider(self) -> str:
-        """
-        Get current AI provider preference
+        Get server port
         
         Returns:
-            str: Provider name ("mistral" or "openai")
+            int: Server port
         """
-        return self.config.get("ai_provider", "mistral")
-    
-    def set_ai_provider(self, provider: str):
-        """
-        Set AI provider preference with validation
-        
-        Args:
-            provider (str): Provider name to set
-            
-        Raises:
-            ValueError: If provider is not supported
-            
-        Supported Providers:
-        - "mistral": Mistral AI (recommended)
-        - "openai": OpenAI GPT models
-        """
-        if provider.lower() in ["mistral", "openai"]:
-            self.set("ai_provider", provider.lower())
-        else:
-            raise ValueError("Provider must be 'mistral' or 'openai'")
+        return self.config.get("port", 8000)
 
 # Global configuration instance for application-wide access
 # This provides a singleton pattern for configuration management
 config = Config()
 
-def setup_api_keys():
+def setup_configuration():
     """
-    Interactive API Key Setup Wizard
+    Basic Configuration Setup
     
-    This function provides a user-friendly interface for configuring API keys
-    and provider settings. It guides users through the setup process with
-    clear instructions and validation.
+    This function provides a simple interface for configuring basic settings
+    for local development.
     
     Features:
-    - Provider selection with recommendations
-    - API key validation and testing
-    - Clear instructions for key acquisition
+    - Basic application settings
+    - Server configuration
+    - Clear instructions
     - Graceful error handling
     - Configuration persistence
     
@@ -373,79 +239,40 @@ def setup_api_keys():
     - Step-by-step guidance
     - Clear success/error messages
     - Option to skip optional settings
-    - Helpful resource links
     """
-    print("🔧 AthenaMist API Key Setup")
+    print("🔧 Primal Genesis Engine Configuration")
     print("=" * 40)
-    print("This wizard will help you configure your AI provider and API keys.")
+    print("This wizard will help you configure basic settings.")
     print("You can skip any step by pressing Enter.")
     
-    # AI Provider Selection
-    print("\n🤖 AI Provider Setup:")
-    print("1. Mistral AI (recommended) - Free tier available, excellent performance")
-    print("2. OpenAI - GPT-4o and GPT-3.5-turbo support")
+    # Server Configuration
+    print("\n🌐 Server Configuration:")
     
-    while True:
-        choice = input("Choose AI provider (1 or 2): ").strip()
-        if choice == "1":
-            config.set_ai_provider("mistral")
-            break
-        elif choice == "2":
-            config.set_ai_provider("openai")
-            break
-        else:
-            print("❌ Invalid choice. Please enter 1 or 2.")
+    host = input("Enter host (default: localhost): ").strip()
+    if host:
+        config.set("host", host)
     
-    # AI API Key Configuration
-    provider = config.get_ai_provider()
-    print(f"\n🔑 {provider.title()} API Key Setup:")
-    print(f"To get your API key, visit:")
-    if provider == "mistral":
-        print("  🌐 https://console.mistral.ai/")
-        print("  📝 Create an account and generate an API key")
-    else:
-        print("  🌐 https://platform.openai.com/api-keys")
-        print("  📝 Create an account and generate an API key")
+    port_input = input("Enter port (default: 8000): ").strip()
+    if port_input:
+        try:
+            port = int(port_input)
+            config.set("port", port)
+        except ValueError:
+            print("⚠️  Invalid port number. Using default.")
     
-    api_key = input(f"Enter your {provider.title()} API key (or press Enter to skip): ").strip()
-    if api_key:
-        # Basic validation
-        if len(api_key) < 10:
-            print("⚠️  API key seems too short. Please verify it's correct.")
-            continue_anyway = input("Continue anyway? (y/N): ").strip().lower()
-            if continue_anyway != 'y':
-                api_key = ""
-        
-        if api_key:
-            config.set_ai_api_key(api_key)
-            print("✅ API key saved successfully!")
-        else:
-            print("⚠️  No API key provided. AthenaMist will use mock responses.")
-    else:
-        print("⚠️  No API key provided. AthenaMist will use mock responses.")
-    
-    # SAM API Key Configuration (Optional)
-    print(f"\n🏛️ SAM API Key Setup (Optional):")
-    print("SAM integration provides access to US Government contract data.")
-    print("A default key is provided, but you can use your own if needed.")
-    
-    sam_key = input("Enter SAM API key (or press Enter to use default): ").strip()
-    if sam_key:
-        config.set_sam_api_key(sam_key)
-        print("✅ SAM API key updated!")
-    else:
-        print("✅ Using default SAM API key.")
+    # Debug Mode
+    debug_input = input("Enable debug mode? (y/N): ").strip().lower()
+    config.set("debug", debug_input == 'y')
     
     # Configuration Summary
-    print("\n🎉 Setup Complete!")
+    print("\n� Configuration Complete!")
     print("=" * 40)
-    print(f"AI Provider: {config.get_ai_provider().title()}")
-    print(f"AI API Key: {'✅ Configured' if config.get_ai_api_key() else '❌ Not configured'}")
-    print(f"SAM API Key: ✅ Configured")
-    print("\nYou can now run AthenaMist with:")
-    print("  python3 athenamist_integration/standalone_demo.py")
-    print("\nTo change settings later, edit the config file or run setup again.")
+    print(f"App Name: {config.get_app_name()}")
+    print(f"Host: {config.get_host()}")
+    print(f"Port: {config.get_port()}")
+    print(f"Debug: {'✅ Enabled' if config.get('debug', False) else '❌ Disabled'}")
+    print("\nConfiguration saved successfully!")
 
 if __name__ == "__main__":
     # Direct execution for setup wizard
-    setup_api_keys() 
+    setup_configuration() 

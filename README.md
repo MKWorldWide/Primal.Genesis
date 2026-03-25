@@ -1,41 +1,30 @@
-# Primal Genesis Engine™ – Sovereign Systems Framework
+# Primal Genesis Engine™ – Local Development Framework
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Tests](https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/actions/workflows/ci.yml/badge.svg)](https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/actions)
-[![codecov](https://codecov.io/gh/MKWorldWide/Primal-Genesis-Engine-Sovereign/graph/badge.svg?token=YOUR-TOKEN-HERE)](https://codecov.io/gh/MKWorldWide/Primal-Genesis-Engine-Sovereign)
-[![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://mkworldwide.github.io/Primal-Genesis-Engine-Sovereign/)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign/badge)](https://api.securityscorecards.dev/projects/github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=MKWorldWide/Primal-Genesis-Engine-Sovereign)](https://dependabot.com)
 
-> **Our Mission**: Empower the architects of the new reality with tools for sovereign, resilient, and intelligent systems.
+> **Our Mission**: Empower developers with tools for building sovereign, resilient, and intelligent systems locally.
 
-Welcome to the **Primal Genesis Engine**, a cutting-edge framework for distributed sovereignty, quantum-resilient systems, and advanced AI integration. This repository houses the foundational architecture for building next-generation, secure, and scalable applications with quantum computing capabilities.
-
-> **Our Mission**: Empower the architects of the new reality with tools for sovereign, resilient, and intelligent systems.
+Welcome to the **Primal Genesis Engine**, a framework for local development of sovereign systems. This repository provides the foundational architecture for building secure, scalable applications with a focus on local development and testing.
 
 ## 🌟 Key Features
 
-- **Quantum-Resilient Architecture**: Built with quantum security in mind
-- **Multi-AI Provider Integration**: Seamlessly switch between leading AI models (OpenAI, MistralAI, Anthropic, Google, Cohere)
+- **Local Development Focus**: Optimized for local development and testing
 - **Modular Design**: Extensible architecture for custom implementations
-- **Cross-Network Synchronization**: Advanced protocols for distributed systems
-- **Developer Experience**: Comprehensive documentation, testing framework, and CI/CD
-- **Quantum Computing**: Integration with Qiskit and IBM Quantum
+- **Developer Experience**: Comprehensive documentation and testing framework
 - **High Performance**: Async-first design with uvloop and aiohttp
-- **Security First**: Built-in security scanning and best practices
+- **Security First**: Built-in security best practices
+- **Easy Setup**: Simple installation and configuration process
 
-## 🏗️ Core Modules
+## 🏗️ Core Components
 
-| Module | Status | Description |
-|--------|--------|-------------|
-| 🌐 **SovereignMesh** | ✅ Active | Decentralized quantum-resilient network grid |
-| 🧠 **AthenaMist** | ✅ Active | Cognitive engine with loopback-empathic modeling |
-| 🔐 **PhantomOS** | ✅ Active | Stealth intelligence and action system |
-| 🔄 **Resonance Dominion** | 🚧 In Development | Quantum energy pattern optimization |
-| ⚡ **X.AI Integration** | ✅ Active | Synnara & Ara quantum AI capabilities |
-| 🔥 **The Nine** | 🚧 In Development | Layer 9 Genesis Protocol implementation |
+| Component | Status | Description |
+|-----------|--------|-------------|
+| 🔧 **Core Engine** | ✅ Active | Main application framework |
+| 🌐 **Web Interface** | ✅ Active | Local web server and API |
+| 🔐 **Security Module** | ✅ Active | Security utilities and encryption |
+| 📊 **Configuration** | ✅ Active | Centralized configuration management |
 
 ## 🚀 Quick Start
 
@@ -44,7 +33,9 @@ Welcome to the **Primal Genesis Engine**, a cutting-edge framework for distribut
 - Python 3.9 or higher
 - pip (Python package manager)
 - Git
-- (Optional) Docker for containerized development
+- Python 3.9 or higher
+- pip (Python package manager)
+- Git
 
 ### Installation
 
@@ -54,27 +45,33 @@ Welcome to the **Primal Genesis Engine**, a cutting-edge framework for distribut
    cd Primal-Genesis-Engine-Sovereign
    ```
 
-2. **Set up a virtual environment** (recommended):
+2. **Set up the environment**:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python3 setup.py
    ```
 
 3. **Install dependencies**:
    ```bash
-   pip install -e .[dev]  # For development with all dependencies
+   pip install -r requirements.txt
+   ```
+
+4. **Configure the application**:
+   ```bash
+   python3 config.py
    ```
 
 ### Basic Usage
 
-```python
-from primal_genesis_engine import PrimalGenesisEngine
+Start the application:
 
-# Initialize the engine
-engine = PrimalGenesisEngine()
+```bash
+python3 -m primal_genesis.app
+```
 
-# Start the engine
-engine.start()
+Or use the setup script:
+
+```bash
+python3 setup.py
 ```
 
 ## 🧪 Testing
@@ -82,13 +79,13 @@ engine.start()
 Run the test suite with:
 
 ```bash
-pytest tests/
+python -m pytest tests/
 ```
 
 For coverage report:
 
 ```bash
-pytest --cov=primal_genesis_engine tests/
+python -m pytest --cov=primal_genesis tests/
 ```
 
 ## 🛠️ Development
@@ -164,52 +161,18 @@ For security issues, please contact security@primalgenesis.xyz
 ## 📞 Support
 
 For support, please open an issue or contact support@primalgenesis.xyz
+### 🧪 Testing
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.9 or higher
-- pip (Python package manager)
-- Git
-- (Optional) Docker for containerized development
-
-### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/MKWorldWide/Primal-Genesis-Engine-Sovereign.git
-   cd Primal-Genesis-Engine-Sovereign
-   ```
-
-2. **Set up a virtual environment** (recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   pip install -r requirements-test.txt  # For development
-   ```
-
-4. **Install in development mode**:
-   ```bash
-   pip install -e .
-   ```
-
-### Running Tests
+Run the test suite with:
 
 ```bash
-# Run all tests
-make test
+python -m pytest tests/
+```
 
-# Run tests with coverage report
-pytest --cov=athenamist_integration tests/
+For coverage report:
 
-# Run specific test file
-pytest tests/athenamist_integration/core/test_quantum_sync.py -v
+```bash
+python -m pytest --cov=primal_genesis tests/
 ```
 
 ### Development Workflow

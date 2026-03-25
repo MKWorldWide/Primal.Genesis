@@ -1,4 +1,4 @@
-# 🏛️ AthenaMist-Blended Architecture Documentation
+# 🏛️ Primal Genesis Engine Architecture Documentation
 
 ## 📋 Table of Contents
 1. [System Overview](#system-overview)
@@ -7,44 +7,35 @@
 4. [Data Flow](#data-flow)
 5. [Security Architecture](#security-architecture)
 6. [Performance Considerations](#performance-considerations)
-7. [Deployment Architecture](#deployment-architecture)
-8. [API Documentation](#api-documentation)
-9. [Configuration Management](#configuration-management)
-10. [Error Handling](#error-handling)
 
 ---
 
 ## 🎯 System Overview
 
-AthenaMist-Blended is a sophisticated AI integration framework that combines multiple AI providers with government contract data analysis capabilities. The system is designed with modularity, scalability, and security as core principles.
+Primal Genesis Engine is a foundational framework for local development of sovereign systems. The system is designed with modularity, security, and local development focus as core principles.
 
 ### 🏗️ High-Level Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    AthenaMist-Blended                       │
-├─────────────────────────────────────────────────────────────┤
+┌─────────────────────────────────────────────────────────┐
+│                Primal Genesis Engine                  │
+├─────────────────────────────────────────────────────────┤
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐ │
-│  │   AI Integration│  │  SAM Integration│  │ Configuration│ │
-│  │     Manager     │  │     Manager     │  │   Manager    │ │
+│  │   Core Engine  │  │ Configuration  │  │   Security   │ │
+│  │    Manager     │  │   Manager      │  │  Module     │ │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘ │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐ │
-│  │   Mistral AI    │  │     OpenAI      │  │   SAM API    │ │
-│  │   Provider      │  │    Provider     │  │  Integration │ │
-│  └─────────────────┘  └─────────────────┘  └──────────────┘ │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐ │
-│  │  Standalone     │  │   Shell Script  │  │   Setup      │ │
-│  │     Demo        │  │   Launcher      │  │   Wizard     │ │
+│  │   Web Server   │  │   Local API    │  │   Setup      │ │
+│  │   Interface     │  │   Endpoint      │  │   Wizard     │ │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ### 🎨 Design Principles
 
-1. **Modularity**: Each component is self-contained with clear interfaces
-2. **Extensibility**: Easy to add new AI providers or data sources
+1. **Local Development Focus**: Optimized for local development and testing
+2. **Modularity**: Each component is self-contained with clear interfaces
 3. **Security**: Comprehensive security measures at all layers
 4. **Performance**: Async operations and efficient resource management
 5. **Reliability**: Robust error handling and recovery mechanisms
@@ -53,483 +44,207 @@ AthenaMist-Blended is a sophisticated AI integration framework that combines mul
 
 ## 🔧 Core Architecture
 
-### 📦 Component Hierarchy
+### Core Components
 
-```
-AthenaMist-Blended/
-├── athenamist_integration/          # Core integration framework
-│   ├── core/                       # Core modules
-│   │   ├── ai_integration.py       # AI provider management
-│   │   └── sam_integration.py      # SAM API integration
-│   └── standalone_demo.py          # Main application interface
-├── config.py                       # Configuration management
-├── setup.py                        # Setup and installation
-├── requirements.txt                # Python dependencies
-├── run_athenamist.sh              # Deployment script
-└── README.md                      # Project documentation
-```
+#### 🔧 Core Engine Manager
+- **Purpose**: Central orchestration of all system components
+- **Responsibilities**:
+  - Component lifecycle management
+  - Configuration coordination
+  - Resource allocation and monitoring
+  - Error handling and recovery
 
-### 🔄 System Interactions
+#### � Configuration Manager
+- **Purpose**: Centralized configuration management
+- **Features**:
+  - JSON-based configuration storage
+  - Environment variable support
+  - Configuration validation
+  - Hot-reloading capabilities
 
-1. **Initialization Flow**:
-   - Configuration loading and validation
-   - Provider initialization and health checks
-   - Session establishment and authentication
-
-2. **Request Processing Flow**:
-   - User input validation and sanitization
-   - Context analysis and mode selection
-   - Provider routing and request execution
-   - Response processing and formatting
-
-3. **Error Handling Flow**:
-   - Error detection and classification
-   - Retry logic and fallback mechanisms
-   - User notification and logging
+#### 🔐 Security Module
+- **Purpose**: Security utilities and encryption
+- **Features**:
+  - Data encryption/decryption
+  - Secure key management
+  - Access control
+  - Security auditing
 
 ---
 
-## 🧩 Component Design
+## 🎨 Component Design
 
-### 🤖 AI Integration Manager
+### Web Server Interface
+- **Technology**: FastAPI + Uvicorn
+- **Features**:
+  - RESTful API endpoints
+  - WebSocket support for real-time communication
+  - Static file serving
+  - Automatic API documentation
 
-**Purpose**: Central coordinator for AI provider interactions
-
-**Key Responsibilities**:
-- Provider selection and switching
-- Request routing and load balancing
-- Performance monitoring and metrics
-- Error handling and recovery
-- Configuration management
-
-**Design Patterns**:
-- Factory Pattern: Provider instantiation
-- Strategy Pattern: Provider selection
-- Observer Pattern: Performance monitoring
-- Singleton Pattern: Global access
-
-**Performance Features**:
-- Async request handling
-- Connection pooling
-- Response caching
-- Rate limiting
-
-### 🏛️ SAM Integration Manager
-
-**Purpose**: Government contract data access and analysis
-
-**Key Responsibilities**:
-- SAM API authentication and session management
-- Entity search and filtering
-- Contract opportunity analysis
-- Data validation and sanitization
-- Caching and performance optimization
-
-**Security Features**:
-- API key encryption and secure storage
-- Request validation and sanitization
-- Rate limiting and abuse prevention
-- Audit logging and monitoring
-
-### ⚙️ Configuration Manager
-
-**Purpose**: Centralized configuration and settings management
-
-**Key Responsibilities**:
-- Configuration file management
-- Environment variable integration
-- API key storage and retrieval
-- Settings validation and sanitization
-- Backup and recovery
-
-**Security Considerations**:
-- Secure API key storage
-- Configuration file permissions
-- Environment variable security
-- Audit trail maintenance
+### Local API Endpoints
+- **Configuration Management**:
+  - GET/POST `/config` - Manage application settings
+  - GET/POST `/config/{key}` - Individual configuration items
+- **System Status**:
+  - GET `/status` - System health and metrics
+  - GET `/metrics` - Performance and usage metrics
+- **Development Tools**:
+  - GET `/debug` - Debug information and tools
+  - POST `/restart` - Safe restart functionality
 
 ---
 
 ## 📊 Data Flow
 
-### 🔄 Request Processing Pipeline
-
+### Configuration Flow
 ```
-User Input → Validation → Context Analysis → Mode Selection → Provider Routing → 
-API Request → Response Processing → Formatting → User Output
+User Request → Config Manager → Validation → Storage → Response
+     ↓              ↓             ↓           ↓
+Environment Variables → Fallback Values → Default Values → System
 ```
 
-### 📈 Data Transformation Stages
-
-1. **Input Validation**:
-   - Query sanitization and validation
-   - Context extraction and analysis
-   - Mode detection and selection
-
-2. **Provider Processing**:
-   - Request payload construction
-   - API authentication and authorization
-   - Response parsing and validation
-
-3. **Output Formatting**:
-   - Response formatting and styling
-   - Error message generation
-   - Performance metrics collection
-
-### 🔗 Component Communication
-
-- **Synchronous**: Direct method calls for immediate operations
-- **Asynchronous**: Async/await for I/O operations and API calls
-- **Event-driven**: Observer pattern for performance monitoring
-- **Message-based**: Queue-based communication for high-load scenarios
+### Request Processing Flow
+```
+Client Request → Web Interface → Core Engine → Component → Response
+      ↓              ↓               ↓           ↓
+   Authentication → Authorization → Processing → Result → Logging
+```
 
 ---
 
-## 🔒 Security Architecture
+## 🔐 Security Architecture
 
-### 🛡️ Security Layers
+### Security Layers
 
-1. **Authentication Layer**:
-   - API key validation and verification
-   - Provider-specific authentication
-   - Session management and token handling
-
-2. **Authorization Layer**:
-   - Access control and permissions
-   - Rate limiting and quota management
-   - Resource isolation and protection
-
-3. **Data Protection Layer**:
+1. **Application Layer**
    - Input validation and sanitization
-   - Output encoding and filtering
-   - Sensitive data encryption
+   - Request authentication
+   - Rate limiting
 
-4. **Audit Layer**:
-   - Comprehensive logging
-   - Security event monitoring
-   - Compliance and reporting
+2. **Data Layer**
+   - Configuration encryption
+   - Secure key storage
+   - Data integrity validation
 
-### 🔐 Security Measures
+3. **Network Layer**
+   - HTTPS enforcement
+   - CORS configuration
+   - Security headers
 
-**API Key Management**:
-- Secure storage with encryption
-- Environment variable fallback
-- Rotation and expiration policies
-- Access control and monitoring
-
-**Request Security**:
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection
-- CSRF protection
-
-**Response Security**:
-- Output encoding and filtering
-- Sensitive data masking
-- Error message sanitization
-- Rate limiting enforcement
+### Security Features
+- **Encryption**: AES-256 for sensitive data
+- **Authentication**: Token-based authentication
+- **Authorization**: Role-based access control
+- **Auditing**: Comprehensive logging and monitoring
 
 ---
 
 ## ⚡ Performance Considerations
 
-### 🚀 Optimization Strategies
+### Async Architecture
+- **Framework**: asyncio-based design
+- **Benefits**: Non-blocking I/O operations
+- **Implementation**: uvloop for enhanced performance
 
-1. **Async Operations**:
-   - Non-blocking I/O operations
-   - Concurrent request processing
-   - Connection pooling and reuse
-   - Background task processing
+### Resource Management
+- **Memory**: Efficient memory usage patterns
+- **CPU**: Optimized algorithms and data structures
+- **I/O**: Minimal disk access, caching strategies
 
-2. **Caching Mechanisms**:
-   - Response caching for repeated queries
-   - Configuration caching for fast access
-   - Session caching for authentication
-   - Metadata caching for performance
-
-3. **Resource Management**:
-   - Memory-efficient data structures
-   - Connection pooling and reuse
-   - Garbage collection optimization
-   - Resource cleanup and disposal
-
-4. **Load Balancing**:
-   - Provider selection based on performance
-   - Request distribution and routing
-   - Failover and recovery mechanisms
-   - Performance monitoring and adjustment
-
-### 📊 Performance Metrics
-
-**Response Time**:
-- Average response time: < 2 seconds
-- 95th percentile: < 5 seconds
-- Timeout threshold: 30 seconds
-
-**Throughput**:
-- Requests per second: 100+
-- Concurrent connections: 50+
-- Error rate: < 1%
-
-**Resource Usage**:
-- Memory usage: < 512MB
-- CPU usage: < 50%
-- Network bandwidth: Optimized
+### Monitoring
+- **Metrics**: Real-time performance monitoring
+- **Logging**: Structured logging with levels
+- **Health Checks**: Component health monitoring
 
 ---
 
-## 🚀 Deployment Architecture
+## � Local Development Setup
 
-### 🏗️ Deployment Options
+### Development Environment
+- **Python Version**: 3.9+
+- **Package Management**: pip + requirements.txt
+- **Configuration**: JSON-based with environment fallback
+- **Testing**: pytest with coverage reporting
 
-1. **Standalone Deployment**:
-   - Single-server installation
-   - Local configuration management
-   - Direct API access
-   - Development and testing
-
-2. **Containerized Deployment**:
-   - Docker containerization
-   - Kubernetes orchestration
-   - Service mesh integration
-   - Scalable architecture
-
-3. **Cloud Deployment**:
-   - AWS/GCP/Azure integration
-   - Serverless functions
-   - Auto-scaling capabilities
-   - Global distribution
-
-### 🔧 Deployment Components
-
-**Application Server**:
-- Python runtime environment
-- Dependency management
-- Process management
-- Health monitoring
-
-**Configuration Management**:
-- Environment-specific configs
-- Secret management
-- Feature flags
-- A/B testing support
-
-**Monitoring and Logging**:
-- Application metrics
-- Performance monitoring
-- Error tracking
-- Audit logging
+### Build Process
+- **Local Development**: Direct script execution
+- **Dependency Management**: requirements.txt
+- **Configuration**: Interactive setup wizard
+- **Validation**: Automated testing and validation
 
 ---
 
 ## 📚 API Documentation
 
-### 🤖 AI Integration API
+### Core Endpoints
 
-#### `AIIntegrationManager`
-
-**Constructor**:
+#### Configuration Management
 ```python
-AIIntegrationManager(provider: str = "mistral", api_key: str = None)
-```
+# Get all configuration
+GET /config
 
-**Methods**:
-
-- `generate_response(query, context, mode)` - Generate AI response
-- `get_status()` - Get integration status
-- `update_api_key(api_key)` - Update API key
-- `switch_provider(provider, api_key)` - Switch AI provider
-
-#### `MistralAIProvider`
-
-**Constructor**:
-```python
-MistralAIProvider(api_key: str = None)
-```
-
-**Methods**:
-- `generate_response(query, context, mode)` - Generate response
-- `_get_system_prompt(mode)` - Get system prompt
-
-#### `OpenAIProvider`
-
-**Constructor**:
-```python
-OpenAIProvider(api_key: str = None)
-```
-
-**Methods**:
-- `generate_response(query, context, mode)` - Generate response
-- `_get_system_prompt(mode)` - Get system prompt
-
-### 🏛️ SAM Integration API
-
-#### `SAMIntegration`
-
-**Constructor**:
-```python
-SAMIntegration(api_key: str = None)
-```
-
-**Methods**:
-- `search_entities(search_term, entity_type, registration_status, limit)` - Search entities
-- `get_entity_details(entity_id)` - Get entity details
-- `get_contract_opportunities(keywords, opportunity_type, limit)` - Get opportunities
-- `test_connection()` - Test API connection
-
-### ⚙️ Configuration API
-
-#### `Config`
-
-**Constructor**:
-```python
-Config(config_file: str = "athenamist_config.json")
-```
-
-**Methods**:
-- `get(key, default)` - Get configuration value
-- `set(key, value)` - Set configuration value
-- `get_ai_api_key()` - Get AI API key
-- `set_ai_api_key(api_key)` - Set AI API key
-- `get_sam_api_key()` - Get SAM API key
-- `set_sam_api_key(api_key)` - Set SAM API key
-
----
-
-## ⚙️ Configuration Management
-
-### 📁 Configuration Structure
-
-```json
+# Update configuration
+POST /config
 {
-  "ai_provider": "mistral",
-  "ai_api_key": "",
-  "sam_api_key": "default_key",
-  "default_mode": "creative",
-  "max_history": 50,
-  "auto_save": true,
-  "log_level": "INFO",
-  "cache_duration": 3600,
-  "timeout": 30,
-  "retry_attempts": 3
+    "key": "value",
+    "debug": true
 }
 ```
 
-### 🔧 Configuration Sources
-
-1. **Default Configuration**: Built-in safe defaults
-2. **Configuration File**: JSON-based persistent storage
-3. **Environment Variables**: Secure deployment configuration
-4. **Runtime Updates**: Dynamic configuration changes
-
-### 🔐 Security Configuration
-
-**API Key Management**:
-- Secure storage with encryption
-- Environment variable fallback
-- Rotation policies
-- Access control
-
-**Network Security**:
-- HTTPS enforcement
-- Certificate validation
-- Proxy configuration
-- Firewall rules
+#### System Status
+```python
+# Get system status
+GET /status
+{
+    "status": "healthy",
+    "uptime": 3600,
+    "version": "1.0.0"
+}
+```
 
 ---
 
-## 🚨 Error Handling
+## 🔧 Configuration Management
 
-### 🎯 Error Categories
+### Configuration Hierarchy
+1. **Default Values**: Built-in safe defaults
+2. **Configuration File**: JSON file overrides
+3. **Environment Variables**: Runtime overrides
+4. **Command Line**: Direct parameter overrides
 
-1. **Authentication Errors**:
-   - Invalid API keys
-   - Expired credentials
-   - Authorization failures
+### Configuration Categories
+- **Application**: Core application settings
+- **Server**: Web server and API configuration
+- **Security**: Security and authentication settings
+- **Development**: Debug and development options
 
-2. **Network Errors**:
-   - Connection timeouts
-   - DNS resolution failures
-   - Network connectivity issues
+---
 
-3. **API Errors**:
-   - Rate limiting
-   - Quota exceeded
-   - Service unavailable
-   - Invalid requests
+## 🛡️ Error Handling
 
-4. **System Errors**:
-   - Memory exhaustion
-   - Disk space issues
-   - Process failures
-   - Configuration errors
+### Error Categories
+1. **Configuration Errors**: Invalid settings, missing files
+2. **Network Errors**: Connection issues, timeouts
+3. **Security Errors**: Authentication failures, access denied
+4. **System Errors**: Resource exhaustion, component failures
 
-### 🔄 Error Recovery Strategies
-
-**Retry Logic**:
-- Exponential backoff
-- Maximum retry attempts
-- Circuit breaker pattern
-- Graceful degradation
-
-**Fallback Mechanisms**:
-- Alternative providers
-- Cached responses
-- Mock responses
-- Error messages
-
-**Monitoring and Alerting**:
-- Error rate tracking
-- Performance monitoring
-- Alert generation
-- Incident response
+### Error Handling Strategy
+- **Graceful Degradation**: Continue operating with reduced functionality
+- **Comprehensive Logging**: Detailed error information
+- **User Feedback**: Clear error messages and recovery suggestions
+- **Automatic Recovery**: Self-healing mechanisms where possible
 
 ---
 
 ## 📈 Future Enhancements
 
-### 🚀 Planned Features
+### Planned Features
+- **Plugin System**: Dynamic component loading
+- **Advanced Security**: Enhanced encryption and authentication
+- **Performance Monitoring**: Advanced metrics and analytics
+- **Development Tools**: Enhanced debugging and profiling tools
 
-1. **Additional AI Providers**:
-   - Anthropic Claude integration
-   - Google Gemini integration
-   - Local model support
-
-2. **Advanced Analytics**:
-   - Usage analytics and reporting
-   - Performance optimization
-   - Cost analysis and optimization
-   - Predictive analytics
-
-3. **Enhanced Security**:
-   - Multi-factor authentication
-   - Role-based access control
-   - Audit trail enhancement
-   - Compliance frameworks
-
-4. **Scalability Improvements**:
-   - Microservices architecture
-   - Load balancing
-   - Auto-scaling
-   - Global distribution
-
-### 🔮 Architecture Evolution
-
-**Phase 1**: Current modular architecture
-**Phase 2**: Microservices decomposition
-**Phase 3**: Cloud-native deployment
-**Phase 4**: AI-native optimization
-
----
-
-## 📝 Conclusion
-
-The AthenaMist-Blended architecture is designed for scalability, security, and maintainability. The modular design allows for easy extension and modification while maintaining high performance and reliability standards.
-
-The system successfully integrates multiple AI providers with government contract data analysis, providing a comprehensive solution for AI-assisted workflows and government contracting research.
-
----
-
-*Last Updated: 2024-12-19*
-*Version: 1.0.0*
-*Architecture Version: 1.0* 
+### Architecture Evolution
+- **Microservices**: Component separation and independence
+- **Advanced APIs**: GraphQL and real-time APIs

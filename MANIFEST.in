@@ -5,7 +5,7 @@ include requirements-test.txt
 include pytest.ini
 
 # Include all files in the package directories
-recursive-include athenamist_integration/ *.py *.json *.yaml *.txt
+recursive-include primal_genesis/ *.py *.json *.yaml *.txt
 
 # Include test files
 recursive-include tests/ *.py

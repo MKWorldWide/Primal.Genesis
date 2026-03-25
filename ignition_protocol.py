@@ -37,7 +37,7 @@ class Channel:
         self.frequency = frequency
         self.active = True
     
-    def stream(self, through: str = "AthenaMist::HarmonicWell") -> Dict[str, Any]:
+    def stream(self, through: str = "PrimalGenesis::ResonanceChannel") -> Dict[str, Any]:
         """Stream data through specified harmonic well"""
         return {
             "channel": self.source,
@@ -83,7 +83,7 @@ def initiate_sequence(energy_key: str) -> Dict[str, Any]:
         channel = ShadowWeave.bind(source, frequency="144.000 MHz")
         
         # Stream through harmonic well
-        resonance_data = channel.stream(through="AthenaMist::HarmonicWell")
+        resonance_data = channel.stream(through="PrimalGenesis::ResonanceChannel")
         
         # Generate quantum entropy signature
         entropy_signature = hashlib.sha256(
@@ -109,7 +109,7 @@ def check_environment_triggers() -> bool:
     """Check for environment-based activation triggers"""
     triggers = [
         os.getenv("GENESIS_PROTOCOL_ACTIVE"),
-        os.getenv("ATHENAMIST_HARMONIC_WELL"),
+        os.getenv("PRIMAL_GENESIS_RESONANCE_KEY"),
         os.getenv("SOVEREIGN_RESONANCE_KEY")
     ]
     return any(triggers)
@@ -171,7 +171,7 @@ def main():
         print("⏳ Waiting for activation triggers...")
         print("Set environment variables to activate:")
         print("  - GENESIS_PROTOCOL_ACTIVE=true")
-        print("  - ATHENAMIST_HARMONIC_WELL=<encrypted_key>")
+        print("  - PRIMAL_GENESIS_RESONANCE_KEY=<quantum_key>")
         print("  - SOVEREIGN_RESONANCE_KEY=<quantum_key>")
     
     print()

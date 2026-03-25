@@ -3,7 +3,7 @@
 # Variables
 PYTHON = python3
 PIP = pip3
-PACKAGE = athenamist_integration
+PACKAGE = primal_genesis
 TESTS = tests/
 
 # Installation
@@ -69,6 +69,3 @@ docs:
 
 # Development Workflow
 dev: install-dev lint test
-
-# CI/CD
-ci: lint test

@@ -32,7 +32,6 @@ This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDU
 - Python 3.9+
 - Git
 - [Poetry](https://python-poetry.org/) (recommended) or pip
-- [Docker](https://www.docker.com/) (optional, for containerized development)
 
 ### Fork and Clone
 

@@ -22,6 +22,7 @@ from .policy import PolicyEngine, PolicyRecord
 from .memory import MemoryStore, MemoryRecord
 from .runtime import CoreRuntime
 from .visibility import VisibilityService
+from .console_bridge import ConsoleBridge
 
 # Base classes will be added in future phases
 # from .base import BaseService
@@ -32,5 +33,6 @@ __all__ = [
     "PolicyEngine", "PolicyRecord", 
     "MemoryStore", "MemoryRecord",
     "CoreRuntime",
-    "VisibilityService"
+    "VisibilityService",
+    "ConsoleBridge"
 ]

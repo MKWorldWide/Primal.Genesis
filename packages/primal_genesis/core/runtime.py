@@ -167,7 +167,7 @@ class CoreRuntime:
             }
         
         # Simulate different execution outcomes based on module type and action
-        execution_mode = 'simulated'
+        execution_mode = 'local-simulated'  # More explicit about being local and simulated
         outcome = 'success'
         execution_details = {
             'module_type': module.module_type,
@@ -175,7 +175,9 @@ class CoreRuntime:
             'module_entrypoint': module.entrypoint,
             'action': action_name,
             'simulated': True,
-            'execution_time': '0.001s'  # Simulated execution time
+            'execution_time': '0.001s',  # Simulated execution time
+            'execution_scope': 'local-only',  # Explicit about local scope
+            'side_effect_level': 'read-only'  # Clear about side effect level
         }
         
         # Add some realistic variation based on module type

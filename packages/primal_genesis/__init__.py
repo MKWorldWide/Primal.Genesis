@@ -19,7 +19,8 @@ from .core import (
     PolicyEngine, PolicyRecord,
     MemoryStore, MemoryRecord,
     CoreRuntime,
-    VisibilityService
+    VisibilityService,
+    ConsoleBridge
 )
 
 # Future exports will be added as modules are implemented
@@ -31,8 +32,9 @@ from .core import (
 __all__ = [
     "Config", 
     "ModuleRegistry", "ModuleRecord",
-    "PolicyEngine", "PolicyRecord",
-    "MemoryStore", "MemoryRecord", 
+    "PolicyEngine", "PolicyRecord", 
+    "MemoryStore", "MemoryRecord",
     "CoreRuntime",
-    "VisibilityService"
+    "VisibilityService",
+    "ConsoleBridge"
 ]

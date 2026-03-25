@@ -2,6 +2,8 @@
 
 This document provides detailed documentation for the Primal Genesis Engine API. The API is built using FastAPI and provides RESTful endpoints for interacting with the system's quantum and AI capabilities.
 
+> **⚠️ UNDER REWRITE** - This document describes target-state architecture rather than current implementation. The actual API implementation does not exist yet.
+
 ## Base URL
 
 ```

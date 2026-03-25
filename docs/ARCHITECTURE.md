@@ -1,5 +1,7 @@
 # Primal Genesis Engine Architecture
 
+> **⚠️ UNDER REWRITE** - This document describes target-state architecture rather than current implementation. The quantum and AI systems described do not exist yet.
+
 ## Overview
 
 The Primal Genesis Engine is a sophisticated framework designed for building distributed, quantum-resilient applications with advanced AI capabilities. This document provides a high-level overview of the system architecture, components, and their interactions.

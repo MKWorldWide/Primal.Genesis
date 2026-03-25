@@ -1,5 +1,7 @@
 # Developer Guide
 
+> **⚠️ UNDER REWRITE** - This document describes target-state architecture rather than current implementation. The package structure and systems described do not exist yet.
+
 Welcome to the Primal Genesis Engine developer guide! This document provides comprehensive information for developers working with the codebase, including setup instructions, coding standards, and development workflows.
 
 ## Table of Contents

@@ -12,6 +12,8 @@ Key components:
 """
 
 from .config import Config
-from .base import BaseService
 
-__all__ = ["Config", "BaseService"]
+# Base classes will be added in future phases
+# from .base import BaseService
+
+__all__ = ["Config"]

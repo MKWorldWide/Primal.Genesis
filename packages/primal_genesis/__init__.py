@@ -11,3 +11,15 @@ Version: 0.1.0
 
 __version__ = "0.1.0"
 __author__ = "Primal Genesis Engine Team"
+
+# Export core functionality
+from .core import Config
+
+# Future exports will be added as modules are implemented
+# from .api import create_app, router
+# from .protocols import BaseProtocol, MessageProtocol
+# from .integrations import BaseIntegration, IntegrationRegistry
+# from .governance import PolicyManager, ModuleRegistry
+# from .cli import main, CommandRegistry
+
+__all__ = ["Config"]

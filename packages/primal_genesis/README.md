@@ -12,6 +12,47 @@ Provides the core Python functionality including:
 - Governance systems
 - CLI tools
 
+## Quick Start
+
+### Configuration Management
+
+```python
+# Import the configuration system
+from packages.primal_genesis import Config
+# Or alternatively:
+from packages.primal_genesis.core import Config
+
+# Create a configuration instance
+config = Config()
+
+# Get configuration values
+debug_mode = config.get("debug", False)
+api_port = config.get("api_port", 8000)
+
+# Set configuration values
+config.set("debug", True)
+config.save()
+```
+
+### Advanced Configuration
+
+```python
+# Custom config file location
+config = Config("my_custom_config.json")
+
+# Environment variable support
+# The system will automatically check for PRIMAL_GENESIS_* env vars
+# For example: PRIMAL_GENESIS_API_PORT=8080
+
+# Default configuration structure
+default_config = {
+    "debug": False,
+    "api_port": 8000,
+    "log_level": "INFO",
+    "data_directory": "./data"
+}
+```
+
 ## Package Structure
 
 ```
@@ -26,17 +67,35 @@ packages/primal_genesis/
 
 ## Current State
 
-**Phase 2: Skeleton Created**
+**Phase 3A: Config System Migrated**
 
-Package structure and placeholder files created. Ready for implementation migration from root-level files.
+- ✅ Configuration management system migrated and functional
+- 🚧 API endpoints (placeholder)
+- 🚧 Protocol implementations (placeholder)
+- 🚧 Integration boundaries (placeholder)
+- 🚧 Governance systems (placeholder)
+- 🚧 CLI tools (placeholder)
 
-## Migration Plan
+## Migration Status
 
-Core components will be migrated from repository root:
+### Completed (Phase 3A)
 - `config.py` → `packages/primal_genesis/core/config.py`
-- New API implementation in `packages/primal_genesis/api/`
+- Package exports configured
+- Usage examples documented
+
+### Upcoming (Future Phases)
+- API implementation in `packages/primal_genesis/api/`
 - Protocol definitions in `packages/primal_genesis/protocols/`
 - Integration boundaries in `packages/primal_genesis/integrations/`
+- Governance systems in `packages/primal_genesis/governance/`
+- CLI tools in `packages/primal_genesis/cli/`
+
+## Development Notes
+
+- The package is designed to be importable from the repository root
+- Configuration system supports both JSON files and environment variables
+- All modules follow consistent import patterns
+- Future modules will be added incrementally
 
 ## Future Implementation
 

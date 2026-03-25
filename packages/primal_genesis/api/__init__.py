@@ -1,16 +1,13 @@
 """
-Primal Genesis Engine - API Module
+API Module
 
-This module contains the REST API and web service endpoints for the Primal Genesis Engine.
+FastAPI-based API layer for Primal Genesis Engine.
+Provides modular router structure for exposing core functionality.
 
-Key components:
-- FastAPI application setup
-- REST endpoints
-- WebSocket handlers
-- API middleware and authentication
+Author: Primal Genesis Engine Team
+Version: 0.1.0
 """
 
-from .app import create_app
-from .routes import router
+from .app import create_app, app
 
-__all__ = ["create_app", "router"]
+__all__ = ["create_app", "app"]

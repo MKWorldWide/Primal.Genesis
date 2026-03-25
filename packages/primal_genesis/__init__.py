@@ -23,6 +23,9 @@ from .core import (
     ConsoleBridge
 )
 
+# Export API functionality
+from .api import create_app, app
+
 # Future exports will be added as modules are implemented
 # from .api import create_app, router
 # from .protocols import BaseProtocol, MessageProtocol
@@ -36,5 +39,7 @@ __all__ = [
     "MemoryStore", "MemoryRecord",
     "CoreRuntime",
     "VisibilityService",
-    "ConsoleBridge"
+    "ConsoleBridge",
+    "create_app",
+    "app"
 ]

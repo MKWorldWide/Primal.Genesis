@@ -28,6 +28,7 @@ config = Config()
 
 **Note**: `packages/` is a repository organization folder, not part of the public package identity. The intended public package name is `primal_genesis`.
 
+```python
 # Get configuration values
 debug_mode = config.get("debug", False)
 api_port = config.get("api_port", 8000)
@@ -35,6 +36,40 @@ api_port = config.get("api_port", 8000)
 # Set configuration values
 config.set("debug", True)
 config.save()
+```
+
+### Module Registry
+
+```python
+# Import the module registry
+from primal_genesis import ModuleRegistry, ModuleRecord
+
+# Create a registry instance
+registry = ModuleRegistry()
+
+# List all registered modules
+modules = registry.list_modules()
+for module in modules:
+    print(f"{module.name}: {module.description} (enabled: {module.enabled})")
+
+# Get a specific module
+console_module = registry.get_module("console")
+if console_module:
+    print(f"Console app location: {console_module.location}")
+
+# Enable/disable modules
+registry.disable_module("pge-runner")
+registry.enable_module("pge-runner")
+
+# Register a new module
+new_module = ModuleRecord(
+    name="my_module",
+    module_type="extension",
+    description="My custom extension",
+    version="1.0.0",
+    location="extensions/my_module"
+)
+registry.register_module(new_module)
 ```
 
 ### Advanced Configuration

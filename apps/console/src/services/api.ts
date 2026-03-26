@@ -84,8 +84,8 @@ export interface RecentActivity {
   timestamp: string;
   summary: {
     total_activities: number;
-    limit: number;
-    activity_level: string;
+    showing_limit: number;
+    activity_types: string[];
   };
   activities: Array<{
     id: string;

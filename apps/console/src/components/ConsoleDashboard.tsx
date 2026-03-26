@@ -287,7 +287,7 @@ const ConsoleDashboard: React.FC<ConsoleDashboardProps> = ({ title = "Primal Gen
                   {recentActivity.summary.total_activities} activities
                 </span>
                 <span className="activity-level">
-                  Level: {recentActivity.summary.activity_level}
+                  Limit: {recentActivity.summary.showing_limit}
                 </span>
               </div>
               

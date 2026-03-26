@@ -1,0 +1,105 @@
+{
+  "contracts": [
+    {
+      "name": "primal_genesis",
+      "integration_type": "core",
+      "description": "Primal Genesis Engine core system providing registry, policy, memory, and runtime services",
+      "version": "1.0.0",
+      "enabled": true,
+      "entrypoint": "packages.primal_genesis.core",
+      "capabilities": [
+        "manage_registry",
+        "enforce_policy",
+        "store_memory",
+        "execute_runtime",
+        "observe_system",
+        "expose_api"
+      ],
+      "status": "active",
+      "read_only": false,
+      "ui_surface": null,
+      "registered_at": "2025-03-26T04:50:00Z",
+      "last_updated": "2025-03-26T04:50:00Z"
+    },
+    {
+      "name": "console",
+      "integration_type": "ui",
+      "description": "Web-based console for system monitoring, configuration, and interaction",
+      "version": "1.0.0",
+      "enabled": true,
+      "entrypoint": "apps.console",
+      "capabilities": [
+        "display_console",
+        "observe_system",
+        "monitor_modules",
+        "view_policies",
+        "browse_memory"
+      ],
+      "status": "active",
+      "read_only": true,
+      "ui_surface": "/console",
+      "registered_at": "2025-03-26T04:50:00Z",
+      "last_updated": "2025-03-26T04:50:00Z"
+    },
+    {
+      "name": "override-core",
+      "integration_type": "core",
+      "description": "Override system for managing configuration overrides and system modifications",
+      "version": "1.0.0",
+      "enabled": true,
+      "entrypoint": "packages.primal_genesis.core.override",
+      "capabilities": [
+        "manage_overrides",
+        "modify_configuration",
+        "persist_changes",
+        "validate_rules"
+      ],
+      "status": "active",
+      "read_only": false,
+      "ui_surface": null,
+      "registered_at": "2025-03-26T04:50:00Z",
+      "last_updated": "2025-03-26T04:50:00Z"
+    },
+    {
+      "name": "pge-runner",
+      "integration_type": "executor",
+      "description": "Primal Genesis Engine runner for executing commands and managing system lifecycle",
+      "version": "1.0.0",
+      "enabled": true,
+      "entrypoint": "packages.primal_genesis.runner",
+      "capabilities": [
+        "run_local_simulation",
+        "execute_commands",
+        "manage_lifecycle",
+        "handle_errors",
+        "log_activity"
+      ],
+      "status": "active",
+      "read_only": false,
+      "ui_surface": null,
+      "registered_at": "2025-03-26T04:50:00Z",
+      "last_updated": "2025-03-26T04:50:00Z"
+    },
+    {
+      "name": "athena",
+      "integration_type": "observer",
+      "description": "Athena observer system for system analysis, insight generation, and intelligent monitoring",
+      "version": "1.0.0",
+      "enabled": true,
+      "entrypoint": "packages.primal_genesis.athena",
+      "capabilities": [
+        "observe_system",
+        "analyze_activity",
+        "generate_insights",
+        "monitor_trends",
+        "provide_recommendations"
+      ],
+      "status": "active",
+      "read_only": true,
+      "ui_surface": "/console/athena",
+      "registered_at": "2025-03-26T04:50:00Z",
+      "last_updated": "2025-03-26T04:50:00Z"
+    }
+  ],
+  "last_saved": "2025-03-26T04:50:00Z"
+}

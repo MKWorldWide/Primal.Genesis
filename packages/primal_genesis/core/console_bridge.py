@@ -11,6 +11,7 @@ Version: 0.1.0
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 from .visibility import VisibilityService
+from ..integrations.contract_registry import get_integration_contract_registry
 
 
 class ConsoleBridge:
@@ -122,6 +123,56 @@ class ConsoleBridge:
             ]
         }
     
+    def get_athena_observations(self) -> Dict:
+        """
+        Get Athena's observations of the system for console display.
+        
+        Returns:
+            Dict with Athena's observational insights
+        """
+        from athena.interfaces.observer import CoreObserver
+        
+        # Create Athena observer
+        observer = CoreObserver(self.visibility)
+        
+        # Gather observations
+        observations = {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'system_health': observer.observe_system_health(),
+            'system_trends': observer.observe_system_trends(),
+            'module_state': observer.observe_module_state(),
+            'execution_patterns': observer.observe_execution_patterns(),
+            'memory_statistics': observer.observe_memory_statistics()
+        }
+        
+        return observations
+    
+    def get_integrations_overview(self) -> Dict:
+        """
+        Get integrations/modules overview for future expansion.
+        
+        Returns:
+            Dict with integration surface information
+        """
+        module_health = self.visibility.get_module_health()
+        
+        return {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'integration_surface': {
+                'total_modules': module_health['total_modules'],
+                'enabled_modules': module_health['enabled_modules'],
+                'disabled_modules': module_health['disabled_modules'],
+                'available_types': list(set(module['type'] for module in module_health['module_details'])),
+                'modules_by_type': module_health['modules_by_type'],
+            },
+            'module_details': module_health['module_details'],
+            'integration_readiness': {
+                'has_enabled_modules': module_health['enabled_modules'] > 0,
+                'has_multiple_types': len(set(module['type'] for module in module_health['module_details'])) > 1,
+                'health_percentage': round((module_health['enabled_modules'] / max(module_health['total_modules'], 1)) * 100, 1)
+            }
+        }
+    
     def get_system_health(self) -> Dict:
         """
         Get system health metrics for console display.
@@ -188,6 +239,38 @@ class ConsoleBridge:
             return 'fair'
         else:
             return 'poor'
+    
+    def get_integration_contracts(self) -> Dict:
+        """
+        Get integration contracts for console display.
+        
+        Returns:
+            Dict with integration contract information
+        """
+        registry = get_integration_contract_registry()
+        contracts = registry.list_contracts()
+        
+        # Convert to console-friendly format
+        contract_data = []
+        for contract in contracts:
+            contract_data.append({
+                'name': contract.name,
+                'type': contract.integration_type,
+                'description': contract.description,
+                'version': contract.version,
+                'enabled': contract.enabled,
+                'status': contract.status,
+                'read_only': contract.read_only,
+                'capabilities': contract.capabilities,
+                'ui_surface': contract.ui_surface,
+                'entrypoint': contract.entrypoint
+            })
+        
+        return {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'contracts': contract_data,
+            'summary': registry.get_contracts_summary()
+        }
     
     def _get_health_recommendation(self, score: float) -> str:
         """Get health recommendation based on score."""

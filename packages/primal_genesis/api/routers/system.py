@@ -111,3 +111,42 @@ async def get_recent_memory(
     """
     activity = console_bridge.get_recent_activity(limit=limit)
     return RecentActivityResponse(**activity)
+
+
+@router.get("/athena/observations", response_model=Dict[str, Any])
+async def get_athena_observations(
+    console_bridge: ConsoleBridge = Depends(get_console_bridge)
+) -> Dict[str, Any]:
+    """
+    Get Athena observations of the system.
+    
+    Returns:
+        Dict with Athena's observational insights
+    """
+    return console_bridge.get_athena_observations()
+
+
+@router.get("/integrations", response_model=Dict[str, Any])
+async def get_integrations_overview(
+    console_bridge: ConsoleBridge = Depends(get_console_bridge)
+) -> Dict[str, Any]:
+    """
+    Get integrations/modules overview for future expansion.
+    
+    Returns:
+        Dict with integration surface information
+    """
+    return console_bridge.get_integrations_overview()
+
+
+@router.get("/integration-contracts", response_model=Dict[str, Any])
+async def get_integration_contracts(
+    console_bridge: ConsoleBridge = Depends(get_console_bridge)
+) -> Dict[str, Any]:
+    """
+    Get integration contracts for system integrations.
+    
+    Returns:
+        Dict with integration contract information
+    """
+    return console_bridge.get_integration_contracts()
